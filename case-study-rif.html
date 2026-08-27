@@ -1,0 +1,515 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>RIF Surfer: designing for the worst week of someone's life — Amanda Cathey</title>
+<meta name="description" content="Case study: RIF Surfer, a free benefits-finder tool built solo in one week after a layoff, using Claude as a coding collaborator, featured in Business Insider.">
+<link rel="canonical" href="https://amandacathey.com/case-study-rif.html">
+<meta property="og:type" content="article">
+<meta property="og:title" content="RIF Surfer: designing for the worst week of someone's life — Amanda Cathey">
+<meta property="og:description" content="Case study: RIF Surfer, a free benefits-finder tool built solo in one week after a layoff, using Claude as a coding collaborator, featured in Business Insider.">
+<meta property="og:url" content="https://amandacathey.com/case-study-rif.html">
+<meta property="og:image" content="https://amandacathey.com/case-study-rif-og.jpg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="RIF Surfer: designing for the worst week of someone's life — Amanda Cathey">
+<meta name="twitter:description" content="Case study: RIF Surfer, a free benefits-finder tool built solo in one week after a layoff, using Claude as a coding collaborator, featured in Business Insider.">
+<meta name="twitter:image" content="https://amandacathey.com/case-study-rif-og.jpg">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' fill='%23000000'/%3E%3Ccircle cx='16' cy='16' r='9' fill='%23ffffff'/%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;0,6..72,600;0,6..72,700;1,6..72,400;1,6..72,500;1,6..72,600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --ink:#1c1a22;
+    --paper:#ffffff;
+    --card-tan:#f1ece2;
+    --paper-dim:#57555f;
+    --plum:#652174;
+    --brass:#9c6f28;
+    --slate:#6f6d78;
+    --line: rgba(23,22,29,0.11);
+    --maxw: 1120px;
+  }
+  *{box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{
+    margin:0;
+    background:var(--paper);
+    color:var(--ink);
+    font-family:-apple-system, BlinkMacSystemFont, sans-serif;
+    font-size:16px;
+    line-height:1.6;
+    -webkit-font-smoothing:antialiased;
+  }
+  @media (prefers-reduced-motion: reduce){
+    *{animation-duration:0.01ms !important; transition-duration:0.01ms !important;}
+  }
+  ::selection{background:var(--plum); color:#ffffff;}
+  a{color:inherit;}
+  a:focus-visible, button:focus-visible{ outline:2px solid var(--plum); outline-offset:3px; border-radius:2px; }
+  .wrap{max-width:var(--maxw); margin:0 auto; padding:0 32px;}
+
+  header{
+    position:sticky; top:0; z-index:10;
+    background:rgba(255,255,255,0.86);
+    backdrop-filter:blur(10px);
+    border-bottom:1px solid var(--line);
+  }
+  nav{
+    display:flex; align-items:center; justify-content:space-between;
+    padding:20px 32px;
+    max-width:var(--maxw); margin:0 auto;
+  }
+  .nav-name{
+    font-family:'Newsreader', serif; font-size:21px; font-weight:600; letter-spacing:-0.005em;
+    color:var(--ink); text-decoration:none; transition:color 0.25s ease;
+  }
+  .nav-name:hover{ color:var(--plum); }
+  .nav-links{ display:flex; gap:28px; }
+  .nav-links a{
+    font-size:13px; text-decoration:none; color:var(--paper-dim); letter-spacing:0.02em;
+    padding:8px 2px; position:relative; transition:color 0.2s ease;
+  }
+  .nav-links a::after{
+    content:''; position:absolute; left:2px; right:2px; bottom:2px; height:1px;
+    background:#ff1f8f; transform:scaleX(0); transform-origin:left; transition:transform 0.25s ease;
+  }
+  .nav-links a:hover::after{ transform:scaleX(1); }
+  .nav-links a:hover{ color:var(--ink); }
+
+  .backlink{
+    display:inline-flex; align-items:center; gap:8px;
+    font-size:13px; color:var(--paper-dim); text-decoration:none;
+    margin:40px 0 24px;
+    transition:color 0.2s ease;
+  }
+  .backlink:hover{ color:var(--plum); }
+
+  .hero{ padding:0 0 24px; }
+  .eyebrow{
+    font-family:-apple-system, BlinkMacSystemFont, sans-serif;
+    font-size:11px; letter-spacing:0.14em; text-transform:uppercase; color:var(--slate);
+  }
+  h1{
+    font-family:'Newsreader', serif; font-weight:500;
+    font-size:clamp(30px,4.6vw,50px); line-height:1.15; letter-spacing:-0.01em;
+    margin:14px 0 20px; max-width:24ch; color:var(--plum);
+  }
+  .hw{
+    display:inline-block;
+    opacity:0;
+    transform:translateY(14px);
+    animation:hwRipple 0.65s ease-out forwards;
+  }
+  @keyframes hwRipple{
+    to{ opacity:1; transform:translateY(0); }
+  }
+  .lede{ font-size:16px; color:var(--paper-dim); max-width:62ch; margin:0 0 20px; }
+  .site-link{
+    display:inline-flex; align-items:center; gap:6px;
+    font-size:13px; color:var(--plum); text-decoration:underline; text-underline-offset:3px;
+  }
+
+  .meta-row{
+    display:flex; flex-wrap:wrap; gap:40px;
+    padding:28px 0; margin:36px 0 0; border-top:1px solid var(--line); border-bottom:1px solid var(--line);
+  }
+  .meta-item .meta-label{ font-size:11px; letter-spacing:0.08em; text-transform:uppercase; color:var(--slate); margin:0 0 6px; }
+  .meta-item .meta-value{ font-size:15px; color:var(--ink); }
+
+  section{ padding:56px 0; }
+  .section-title{
+    font-family:'Newsreader', serif; font-weight:500; font-size:clamp(22px,2.8vw,30px);
+    margin:0 0 18px; color:var(--ink);
+  }
+  .section-body p{ color:var(--paper-dim); font-size:16px; max-width:70ch; margin:0 0 16px; }
+  .section-body strong{ color:var(--ink); font-weight:500; }
+
+  .three-col{ display:grid; grid-template-columns:1fr 1fr 1fr; gap:28px; }
+  .two-col{ display:grid; grid-template-columns:1fr 1fr; gap:28px; }
+  @media (max-width:760px){ .three-col, .two-col{ grid-template-columns:1fr; gap:20px; } }
+  .stat-card{ text-align:center; padding:8px; }
+  .stat-card .stat-move{ font-family:'Newsreader', serif; font-size:clamp(22px,3vw,30px); color:var(--plum); font-weight:500; }
+  .stat-card .stat-label{ font-size:13px; color:var(--slate); margin-top:6px; }
+
+  .col-card{ background:var(--card-tan); border-radius:16px; padding:24px 24px 26px; }
+  .col-card .col-label{ font-size:11px; letter-spacing:0.08em; text-transform:uppercase; color:var(--brass); margin:0 0 10px; display:block; }
+  .col-card p{ color:var(--paper-dim); font-size:14.5px; margin:0; }
+
+  .feature-list{ list-style:none; margin:0; padding:0; max-width:60ch; }
+  .feature-list li{ position:relative; padding-left:24px; margin:0 0 10px; color:var(--paper-dim); font-size:15px; }
+  .feature-list li::before{ content:'\2713'; position:absolute; left:0; top:1px; color:var(--plum); font-weight:600; font-size:13px; }
+
+  .shot-frame{
+    border-radius:14px; overflow:hidden; box-shadow:0 10px 24px rgba(0,0,0,0.10);
+    border:1px solid var(--line);
+    margin:0; background:#f2f2f2;
+  }
+  .shot-frame img{ width:100%; display:block; cursor:zoom-in; transition:opacity 0.2s ease; }
+  .shot-frame img:hover{ opacity:0.92; }
+
+  .lightbox{
+    position:fixed; inset:0; z-index:100;
+    background:rgba(20,18,22,0.92);
+    display:none; align-items:center; justify-content:center;
+    padding:40px; cursor:zoom-out;
+  }
+  .lightbox.is-open{ display:flex; }
+  .lightbox img{
+    max-width:100%; max-height:100%; border-radius:8px; box-shadow:0 30px 80px rgba(0,0,0,0.5);
+    cursor:zoom-in; transition:transform 0.35s ease; transform-origin:center center;
+  }
+  .lightbox img.is-zoomed{ cursor:zoom-out; transform:scale(2.2); max-width:none; max-height:none; }
+  .lightbox-close{
+    position:fixed; top:24px; right:32px; z-index:101;
+    color:#fff; font-size:28px; line-height:1; background:none; border:none; cursor:pointer;
+    font-family:-apple-system, BlinkMacSystemFont, sans-serif;
+  }
+  .shot-caption{ font-size:13px; color:var(--slate); margin:12px 0 32px; text-align:center; }
+  .browser-chrome{ display:flex; align-items:center; gap:6px; padding:10px 14px; background:#f2f2f2; }
+  .browser-chrome .dot{ width:8px; height:8px; border-radius:50%; display:inline-block; }
+  .browser-chrome .url{ margin-left:8px; font-size:11px; color:#777; background:#fff; border-radius:4px; padding:3px 12px; }
+  .rif-header-wrap{ position:relative; }
+  .rif-header-wrap img{ display:block; width:100%; }
+  .rif-selected-fill-static{
+    position:absolute; left:22.3%; top:67.2%; width:44.9%; height:18.5%;
+    background:#fff; display:flex; align-items:center; justify-content:space-between; gap:4px;
+    box-sizing:border-box; padding:0 10px;
+    font-family:-apple-system, BlinkMacSystemFont, sans-serif; font-size:6.5px; font-weight:500; color:#1a1a1a;
+  }
+
+  .mobile-frame{
+    max-width:280px; margin:0 auto;
+    padding:16px 8px; border-radius:26px; background:#1a1a1a; box-shadow:0 20px 50px rgba(0,0,0,0.25);
+    position:relative;
+  }
+  .mobile-frame::before{
+    content:''; position:absolute; top:9px; left:50%; transform:translateX(-50%);
+    width:40px; height:10px; background:#1a1a1a; border-radius:8px; z-index:2;
+  }
+  .mobile-frame .shot-frame{ border-radius:16px; max-height:560px; overflow-y:hidden; }
+
+  .pull-quote{
+    border-left:3px solid var(--plum); padding:6px 0 6px 28px; margin:36px 0;
+  }
+  .pull-quote p{
+    font-family:'Newsreader', serif; font-style:italic; font-weight:400;
+    font-size:clamp(18px,2vw,21px); color:var(--ink); margin:0 0 12px; max-width:56ch;
+  }
+  .pull-quote .attr{ font-size:13px; color:var(--slate); }
+
+  .press-row{ display:flex; align-items:center; gap:12px; margin:0 0 18px; }
+  .press-row img{ height:16px; width:auto; }
+  .press-row .press-label{ font-size:12px; color:var(--slate); letter-spacing:0.04em; }
+
+  .lightbox{
+    position:fixed; inset:0; z-index:100;
+    background:rgba(20,18,22,0.92);
+    display:none; align-items:center; justify-content:center;
+    padding:40px; cursor:zoom-out;
+  }
+  .lightbox.is-open{ display:flex; }
+  .lightbox img{ max-width:100%; max-height:100%; border-radius:8px; box-shadow:0 30px 80px rgba(0,0,0,0.5); }
+
+  footer{
+    padding:56px 0 60px; border-top:1px solid var(--line); margin-top:40px;
+  }
+  .footer-row{ display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:20px; }
+  .footer-row a{ text-decoration:none; color:var(--paper-dim); font-size:14px; transition:color 0.2s ease; }
+  .footer-row a:hover{ color:var(--plum); }
+</style>
+</head>
+<body>
+
+<header>
+  <nav>
+    <a href="./index.html" class="nav-name">Amanda Cathey</a>
+    <div class="nav-links">
+      <a href="./index.html#hero">Home</a>
+      <a href="./index.html#about">About</a>
+      <a href="./index.html#contact">Connect</a>
+    </div>
+  </nav>
+</header>
+
+<main>
+  <div class="wrap">
+    <a href="./index.html#work" class="backlink">&larr; Back to selected projects</a>
+
+    <div class="hero">
+      <p class="eyebrow">Independent Build &middot; RIF Surfer</p>
+      <h1><span class="hw" style="animation-delay:0s;">RIF</span> <span class="hw" style="animation-delay:0.045s;">Surfer:</span> <span class="hw" style="animation-delay:0.09s;">designing</span> <span class="hw" style="animation-delay:0.135s;">for</span> <span class="hw" style="animation-delay:0.18s;">the</span> <span class="hw" style="animation-delay:0.225s;">worst</span> <span class="hw" style="animation-delay:0.27s;">week</span> <span class="hw" style="animation-delay:0.315s;">of</span> <span class="hw" style="animation-delay:0.36s;">someone's&nbsp;life</span></h1>
+      <p class="lede">Built solo in one week after my own layoff, using Claude as a coding collaborator, RIF Surfer puts unemployment, health coverage, SNAP, and rental assistance in one place, by state, in plain language. Free, always.</p>
+      <a class="site-link" href="https://rif-surfer.netlify.app/" target="_blank" rel="noopener">rif-surfer.netlify.app &rarr;</a>
+    </div>
+
+    <div class="three-col">
+      <div class="stat-card">
+        <div class="stat-move">3,000+</div>
+        <div class="stat-label">Reactions on LinkedIn</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-move">652</div>
+        <div class="stat-label">Reposts</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-move">148K</div>
+        <div class="stat-label">Impressions</div>
+      </div>
+    </div>
+
+    <div class="shot-frame" style="margin-top:40px;">
+      <div class="browser-chrome">
+        <span class="dot" style="background:#e0605a;"></span>
+        <span class="dot" style="background:#e0b93f;"></span>
+        <span class="dot" style="background:#5aa85e;"></span>
+        <span class="url">rifsurfer.com</span>
+      </div>
+      <div class="rif-header-wrap">
+        <img src="./rif-header-top.jpg" alt="RIF Surfer header with state selector, Massachusetts">
+        <div class="rif-selected-fill-static">Massachusetts <span style="font-size:1em; opacity:0.7;">&#9662;</span></div>
+      </div>
+      <img src="./rif-header-pills.jpg" alt="RIF Surfer category filter pills: All, Income, Health, Family, Housing, Job search, Wellness">
+      <div style="max-height:440px; overflow:hidden;">
+        <img src="./rif-body.jpg" alt="RIF Surfer benefits finder tool showing categorized support programs by state">
+      </div>
+    </div>
+    <p class="shot-caption">RIF Surfer, live: benefits and support filtered by state, one page, no dead&nbsp;ends.</p>
+
+    <section>
+      <h2 class="section-title">The spark</h2>
+      <div class="section-body">
+        <p>I got laid off. Not hypothetically. Actually laid off, with three daughters, a move to plan, and a lot of uncertainty about what came next.</p>
+        <p>In the first few days, I did what I always do. I mapped the problem. I knew benefits existed: unemployment insurance, COBRA alternatives, SNAP, rental assistance, free therapy. But finding them felt like a second job. Every search led to a different government site, written as if you already knew what to ask for.</p>
+        <p>I did not want to just navigate it for myself. I wanted to fix it for everyone. So I opened a conversation with Claude and started building.</p>
+      </div>
+    </section>
+
+    <section>
+      <h2 class="section-title">The problem</h2>
+      <div class="section-body">
+        <p>When you lose your job, the clock starts immediately. COBRA has a 60-day window. Unemployment claims have deadlines. SNAP takes time to process. But the information is scattered across dozens of government sites, written in bureaucratic language, with no single place that makes sense of it all.</p>
+      </div>
+      <div class="pull-quote">
+        <p>&ldquo;The person who needs this most is the least equipped to find it.&rdquo;</p>
+      </div>
+    </section>
+
+    <section>
+      <h2 class="section-title">The solution</h2>
+      <div class="section-body">
+        <p>RIF Surfer puts everything in one place: benefits, programs, and community resources filtered by state, in human language, with direct links to take action. Free, always.</p>
+      </div>
+      <div class="shot-frame">
+        <div class="browser-chrome">
+          <span class="dot" style="background:#e0605a;"></span>
+          <span class="dot" style="background:#e0b93f;"></span>
+          <span class="dot" style="background:#5aa85e;"></span>
+          <span class="url">rifsurfer.com</span>
+        </div>
+        <div class="rif-header-wrap">
+          <img src="./rif-header-top.jpg" alt="RIF Surfer header with state selector, Massachusetts">
+          <div class="rif-selected-fill-static">Massachusetts <span style="font-size:1em; opacity:0.7;">&#9662;</span></div>
+        </div>
+        <img src="./rif-header-pills.jpg" alt="RIF Surfer category filter pills: All, Income, Health, Family, Housing, Job search, Wellness">
+        <div style="max-height:560px; overflow:hidden;">
+          <img src="./rif-body.jpg" alt="RIF Surfer benefits finder tool showing categorized support programs by state">
+        </div>
+      </div>
+      <p class="shot-caption">RIF Surfer, live: benefits and support filtered by state, badged by cost and urgency, one page, no dead ends.</p>
+    </section>
+
+    <section>
+      <h2 class="section-title">Design principles</h2>
+      <div class="section-body">
+        <p>This tool needed to work for someone at their worst moment, stressed, scared, possibly on their phone at 11pm. Every decision had to prioritize clarity over cleverness. I drew inspiration from the <a href="https://gov.uk" target="_blank" rel="noopener" style="color:var(--plum);">GOV.UK</a> design system, built specifically for people navigating high-stakes services under stress. Three principles guided everything.</p>
+      </div>
+      <div class="three-col">
+        <div class="col-card">
+          <span class="col-label">Clarity over aesthetics</span>
+          <p>Color carries meaning, badges signal urgency, cost, and federal vs. state status at a glance. Nothing decorative.</p>
+        </div>
+        <div class="col-card">
+          <span class="col-label">Trust through transparency</span>
+          <p>Every link goes to an official government or vetted nonprofit source.</p>
+        </div>
+        <div class="col-card">
+          <span class="col-label">Accessible by default</span>
+          <p>High contrast, plain language, keyboard navigable. Not a checklist, the brief.</p>
+        </div>
+      </div>
+    </section>
+
+    <section>
+      <h2 class="section-title">The AI workflow</h2>
+      <div class="section-body">
+        <p>I built RIF Surfer in a week using Claude as a coding collaborator, and I want to be clear about what that means. I directed every decision: the GOV.UK inspiration, the color system, badge semantics, content, copy, and each iteration. Claude generated code based on my direction, fast implementation, but no taste, judgment, or understanding of what it feels like to need this tool at the worst moment of your professional life.</p>
+        <p>I worked with Claude like I would with an engineer. I owned the design, the code was AI assisted. This is how senior designers are starting to work: directing AI, critiquing its output, and protecting the design vision through iteration.</p>
+      </div>
+    </section>
+
+    <section>
+      <h2 class="section-title">Key design decisions</h2>
+      <div class="section-body">
+        <p><strong>GOV.UK over a custom design system.</strong> I didn't invent a visual language. I used one built for people in high-stakes, stressful situations. That's a design decision, not a shortcut.</p>
+        <p><strong>Badges over color-coded categories.</strong> Early versions used icon colors to signal category. I kept icons neutral and moved meaning to badges (urgent, federal, state, free, community) for clearer hierarchy and better accessibility.</p>
+        <p><strong>Search inline with tabs.</strong> A separate search row added visual noise. Moving it flush right on the tab row kept filtering controls in one line.</p>
+        <p><strong>The name.</strong> After a dozen options, RIF Surfer won because RIF (Reduction In Force) is the insider term laid-off corporate workers recognize, signaling credibility to the right audience.</p>
+        <p><strong>State-specific links for all 50 states.</strong> Each state has its own unemployment, Medicaid, and SNAP portal. Generic federal links can feel like a dead end, so getting the right link for every state was a content and UX decision.</p>
+      </div>
+    </section>
+
+    <section>
+      <h2 class="section-title">What shipped</h2>
+      <div class="section-body">
+        <p>A fully functional, publicly accessible web tool built in one week.</p>
+      </div>
+      <div class="two-col">
+        <ul class="feature-list">
+          <li>21 benefit cards across 6 categories: income, health, family, housing, job search, and wellness</li>
+          <li>State-specific links for all 50 states across unemployment, Medicaid, and SNAP</li>
+          <li>Tab filtering and inline search</li>
+          <li>First-week checklist with progress bar</li>
+        </ul>
+        <ul class="feature-list">
+          <li>Community contribution via Google Forms</li>
+          <li>Fully responsive, mobile-first</li>
+          <li>Live at <a href="https://rif-surfer.netlify.app/" target="_blank" rel="noopener" style="color:var(--plum);">rif-surfer.netlify.app</a></li>
+          <li>Buy Me a Coffee support button added to help sustain free access and ongoing updates</li>
+        </ul>
+      </div>
+      <div class="mobile-frame" style="margin-top:36px;">
+        <div class="shot-frame">
+          <video src="./rif-surfer-demo.mp4" autoplay muted playsinline controls style="width:100%; display:block;"></video>
+        </div>
+      </div>
+      <p class="shot-caption">The real thing, live on a phone: picking a state and scrolling through what it&nbsp;finds.</p>
+    </section>
+
+    <section>
+      <h2 class="section-title">Results</h2>
+      <div class="section-body">
+        <p>The LinkedIn post announcing the tool went live at 9AM on a Thursday. Within 12 hours: 106 reactions, 21 reposts, and 9 comments, including reposts from HR, org leadership, career coaching, and product design.</p>
+        <p>In the first week: <strong>3,075 reactions</strong>, <strong>652 reposts</strong>, <strong>302 comments</strong>, <strong>740 saves</strong>, and <strong>148,087 impressions</strong>, driving <strong>4,050 visits</strong> back to the live tool. Netlify featured the tool to 36,000 followers, reaching people across the UK, Ireland, Canada, South Africa, and the Netherlands.</p>
+        <p>But the number that matters most is not on LinkedIn. Within days, the community improved the tool in real time. Washington D.C. was added, Headspace was removed, Pennie was corrected, SNAP turnaround guidance was added, and we clarified that severance does not disqualify you from unemployment or SNAP.</p>
+      </div>
+      <div class="shot-frame" style="max-width:420px; margin:36px auto 0; background:#fff;">
+        <img src="./rif-engagement-final.jpg" alt="LinkedIn engagement stats for the RIF Surfer post: 4,856 social engagements, 3,075 reactions, 302 comments, 652 reposts, 740 saves, 87 sends, and 4,050 link engagements">
+      </div>
+      <p class="shot-caption">Final LinkedIn engagement on the launch post.</p>
+      <div class="pull-quote">
+        <p>&ldquo;Been out of work 6 months and my savings is running low. I now need these things.&rdquo;</p>
+        <p class="attr">&mdash; Susan Michalski</p>
+      </div>
+      <div class="pull-quote">
+        <p>&ldquo;Getting laid off is already a gut punch. Then you have to figure out unemployment, insurance, bills, job searching, and all the other stuff nobody really prepares you for. Respect to you for taking a hard moment and turning it into something that can actually help people.&rdquo;</p>
+        <p class="attr">&mdash; Michael Gonzalez, General Manager</p>
+      </div>
+    </section>
+
+    <section>
+      <h2 class="section-title">Press</h2>
+      <div class="press-row">
+        <img src="./business-insider-logo.png" alt="Business Insider">
+        <span class="press-label">June 2026 &middot; &ldquo;As Told To&rdquo; series</span>
+      </div>
+      <div class="section-body">
+        <p>Three weeks after launch, Business Insider featured RIF Surfer in their &ldquo;As Told To&rdquo; series, a first-person account in my own words, as told to Sarah E. Needleman. The piece covers what led to building RIF Surfer, from nearly missing my health coverage enrollment window to using AI as a coding collaborator, and why normalizing asking for help after a layoff matters.</p>
+      </div>
+      <a href="https://www.businessinsider.com" target="_blank" rel="noopener" style="display:block; text-decoration:none;">
+        <div class="shot-frame" style="max-width:640px;">
+          <img src="./rif-press-final.jpg" alt="Business Insider headline: I lost my job, got divorced, and had to move within weeks. I found purpose in building a layoff support tool. As told to Sarah E. Needleman.">
+        </div>
+      </a>
+      <p class="shot-caption">&ldquo;I lost my job, got divorced, and had to move within weeks. I found purpose in building a layoff support tool.&rdquo; <a href="https://www.businessinsider.com" target="_blank" rel="noopener" style="color:var(--plum);">Read it on Business Insider &rarr;</a></p>
+    </section>
+
+    <section>
+      <h2 class="section-title">What's next</h2>
+      <div class="section-body">
+        <p>RIF Surfer is live and being tested in the wild. Community feedback is already improving it: state links corrected, outdated resources removed, and new categories suggested. Here's what's next.</p>
+        <p><strong>Privacy-friendly analytics.</strong> Now live via Plausible, tracking usage, states selected, resources clicked, and traffic sources to guide future decisions.</p>
+        <p><strong>V2 in Framer with a CMS.</strong> Moving to a CMS means updating resources is a content edit, not a code change. This also makes it easier to publish community contributions. Potentially adding AI search so people can find what they need faster.</p>
+        <p><strong>More resources.</strong> The Google Form is already collecting suggestions. Each submission shows what's missing for people in real situations.</p>
+        <p><strong>A stepped guide.</strong> For people who feel overwhelmed and need a different kind of support.</p>
+        <p><strong>Outplacement partnerships.</strong> RIF Surfer could be free for individuals and licensed to HR teams and outplacement firms as a white-label tool.</p>
+        <p><strong>A community layer.</strong> The next version could include its own space for people to share what worked, what didn't, and what they wish they'd known.</p>
+        <p><strong>An agent that keeps itself current.</strong> Instead of just flagging a dead link, an agent that goes out, checks each program's page, and updates the details here automatically, so the content stays accurate without someone doing it by&nbsp;hand.</p>
+        <p><strong>Tell it your situation.</strong> Instead of browsing categories, describe what's going on, layoff date, state, kids, income, and an agent matches you to the specific programs that actually apply, not the full&nbsp;list.</p>
+      </div>
+    </section>
+
+    <div class="meta-row" style="margin-top:16px;">
+      <div class="meta-item">
+        <p class="meta-label">Role</p>
+        <p class="meta-value">Builder</p>
+      </div>
+      <div class="meta-item">
+        <p class="meta-label">Industry</p>
+        <p class="meta-value">Community service</p>
+      </div>
+      <div class="meta-item">
+        <p class="meta-label">Timeline</p>
+        <p class="meta-value">One week</p>
+      </div>
+    </div>
+  </div>
+</main>
+
+<footer>
+  <div class="wrap footer-row">
+    <a href="./index.html#work">&larr; Back to selected projects</a>
+    <a href="./index.html#contact">Get in touch &rarr;</a>
+  </div>
+</footer>
+
+<div class="lightbox" id="lightbox">
+  <button class="lightbox-close" aria-label="Close">&times;</button>
+  <img id="lightbox-img" src="" alt="">
+</div>
+
+<script>
+  (function(){
+    var lightbox = document.getElementById('lightbox');
+    var lightboxImg = document.getElementById('lightbox-img');
+    document.querySelectorAll('.shot-frame img').forEach(function(img){
+      img.addEventListener('click', function(){
+        lightboxImg.src = img.src;
+        lightboxImg.alt = img.alt;
+        lightboxImg.classList.remove('is-zoomed');
+        lightbox.classList.add('is-open');
+      });
+    });
+    function closeLightbox(){ lightbox.classList.remove('is-open'); lightboxImg.src=''; lightboxImg.classList.remove('is-zoomed'); }
+    lightbox.addEventListener('click', closeLightbox);
+    lightboxImg.addEventListener('mousemove', function(e){
+      if(!lightboxImg.classList.contains('is-zoomed')) return;
+      var rect = lightboxImg.getBoundingClientRect();
+      var xPct = ((e.clientX - rect.left) / rect.width) * 100;
+      var yPct = ((e.clientY - rect.top) / rect.height) * 100;
+      lightboxImg.style.transformOrigin = xPct + '% ' + yPct + '%';
+    });
+    lightboxImg.addEventListener('click', function(e){
+      e.stopPropagation();
+      if(lightboxImg.classList.contains('is-zoomed')){
+        lightboxImg.classList.remove('is-zoomed');
+        lightboxImg.style.transition = 'transform 0.35s ease';
+      } else {
+        var rect = lightboxImg.getBoundingClientRect();
+        var xPct = ((e.clientX - rect.left) / rect.width) * 100;
+        var yPct = ((e.clientY - rect.top) / rect.height) * 100;
+        lightboxImg.style.transition = 'transform 0.35s ease';
+        lightboxImg.style.transformOrigin = xPct + '% ' + yPct + '%';
+        lightboxImg.classList.add('is-zoomed');
+        setTimeout(function(){ lightboxImg.style.transition = 'none'; }, 350);
+      }
+    });
+    document.addEventListener('keydown', function(e){ if(e.key === 'Escape') closeLightbox(); });
+  })();
+</script>
+
+</body>
+</html>

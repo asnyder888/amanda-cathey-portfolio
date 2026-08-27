@@ -1,0 +1,499 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Building a design system across global insurance products — Amanda Cathey</title>
+<meta name="description" content="Case study: taking a design system from zero to one at Liberty Mutual and Safeco, merging two parallel systems into one, and the business results that followed.">
+<link rel="canonical" href="https://amandacathey.com/case-study-liberty.html">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Building a design system across global insurance products — Amanda Cathey">
+<meta property="og:description" content="Case study: taking a design system from zero to one at Liberty Mutual and Safeco, merging two parallel systems into one, and the business results that followed.">
+<meta property="og:url" content="https://amandacathey.com/case-study-liberty.html">
+<meta property="og:image" content="https://amandacathey.com/case-study-liberty-og.jpg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Building a design system across global insurance products — Amanda Cathey">
+<meta name="twitter:description" content="Case study: taking a design system from zero to one at Liberty Mutual and Safeco, merging two parallel systems into one, and the business results that followed.">
+<meta name="twitter:image" content="https://amandacathey.com/case-study-liberty-og.jpg">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' fill='%23000000'/%3E%3Ccircle cx='16' cy='16' r='9' fill='%23ffffff'/%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;0,6..72,600;0,6..72,700;1,6..72,400;1,6..72,500;1,6..72,600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --ink:#1c1a22;
+    --paper:#ffffff;
+    --card-tan:#f1ece2;
+    --paper-dim:#57555f;
+    --plum:#652174;
+    --brass:#9c6f28;
+    --slate:#6f6d78;
+    --line: rgba(23,22,29,0.11);
+    --maxw: 1120px;
+  }
+  *{box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{
+    margin:0;
+    background:var(--paper);
+    color:var(--ink);
+    font-family:-apple-system, BlinkMacSystemFont, sans-serif;
+    font-size:16px;
+    line-height:1.6;
+    -webkit-font-smoothing:antialiased;
+  }
+  @media (prefers-reduced-motion: reduce){
+    *{animation-duration:0.01ms !important; transition-duration:0.01ms !important;}
+  }
+  ::selection{background:var(--plum); color:#ffffff;}
+  a{color:inherit;}
+  a:focus-visible, button:focus-visible{ outline:2px solid var(--plum); outline-offset:3px; border-radius:2px; }
+  .wrap{max-width:var(--maxw); margin:0 auto; padding:0 32px;}
+
+  header{
+    position:sticky; top:0; z-index:10;
+    background:rgba(255,255,255,0.86);
+    backdrop-filter:blur(10px);
+    border-bottom:1px solid var(--line);
+  }
+  nav{
+    display:flex; align-items:center; justify-content:space-between;
+    padding:20px 32px;
+    max-width:var(--maxw); margin:0 auto;
+  }
+  .nav-name{
+    font-family:'Newsreader', serif; font-size:21px; font-weight:600; letter-spacing:-0.005em;
+    color:var(--ink); text-decoration:none; transition:color 0.25s ease;
+  }
+  .nav-name:hover{ color:var(--plum); }
+  .nav-links{ display:flex; gap:28px; }
+  .nav-links a{
+    font-size:13px; text-decoration:none; color:var(--paper-dim); letter-spacing:0.02em;
+    padding:8px 2px; position:relative; transition:color 0.2s ease;
+  }
+  .nav-links a::after{
+    content:''; position:absolute; left:2px; right:2px; bottom:2px; height:1px;
+    background:#ff1f8f; transform:scaleX(0); transform-origin:left; transition:transform 0.25s ease;
+  }
+  .nav-links a:hover::after{ transform:scaleX(1); }
+  .nav-links a:hover{ color:var(--ink); }
+
+  .backlink{
+    display:inline-flex; align-items:center; gap:8px;
+    font-size:13px; color:var(--paper-dim); text-decoration:none;
+    margin:40px 0 24px;
+    transition:color 0.2s ease;
+  }
+  .backlink:hover{ color:var(--plum); }
+
+  .hero{ padding:0 0 48px; }
+  .eyebrow{
+    font-family:-apple-system, BlinkMacSystemFont, sans-serif;
+    font-size:11px; letter-spacing:0.14em; text-transform:uppercase; color:var(--slate);
+  }
+  h1{
+    font-family:'Newsreader', serif; font-weight:500;
+    font-size:clamp(32px,5vw,54px); line-height:1.1; letter-spacing:-0.01em;
+    margin:14px 0 20px; max-width:20ch; color:var(--plum);
+  }
+  .hw{
+    display:inline-block;
+    opacity:0;
+    transform:translateY(14px);
+    animation:hwRipple 0.65s ease-out forwards;
+  }
+  @keyframes hwRipple{
+    to{ opacity:1; transform:translateY(0); }
+  }
+  .lede{ font-size:16px; color:var(--paper-dim); max-width:62ch; margin:0; }
+
+  .meta-row{
+    display:flex; flex-wrap:wrap; gap:40px;
+    padding:28px 0; margin:36px 0 0; border-top:1px solid var(--line); border-bottom:1px solid var(--line);
+  }
+  .meta-item .meta-label{ font-size:11px; letter-spacing:0.08em; text-transform:uppercase; color:var(--slate); margin:0 0 6px; }
+  .meta-item .meta-value{ font-size:15px; color:var(--ink); }
+
+  section{ padding:56px 0; }
+  .section-title{
+    font-family:'Newsreader', serif; font-weight:500; font-size:clamp(22px,2.8vw,30px);
+    margin:0 0 18px; color:var(--ink);
+  }
+  .section-eyebrow{
+    font-family:-apple-system, BlinkMacSystemFont, sans-serif;
+    font-size:11px; letter-spacing:0.1em; text-transform:uppercase; color:var(--brass); margin:0 0 8px;
+  }
+  .section-body p{ color:var(--paper-dim); font-size:16px; max-width:70ch; margin:0 0 16px; }
+  .section-body strong{ color:var(--ink); font-weight:500; }
+
+  .two-col{ display:grid; grid-template-columns:1fr 1fr; gap:48px; }
+  .three-col{ display:grid; grid-template-columns:1fr 1fr 1fr; gap:28px; }
+  @media (max-width:760px){ .two-col, .three-col{ grid-template-columns:1fr; gap:28px; } }
+  .col-card{ background:var(--card-tan); border-radius:16px; padding:28px 28px 30px; }
+  .col-card .col-label{ font-size:11px; letter-spacing:0.08em; text-transform:uppercase; color:var(--brass); margin:0 0 10px; }
+  .col-label{ font-size:11px; letter-spacing:0.08em; text-transform:uppercase; color:var(--brass); }
+  .col-card p{ color:var(--paper-dim); font-size:15px; margin:0; }
+
+  .stat-card{ text-align:center; padding:8px; }
+  .stat-card .stat-move{ font-family:'Newsreader', serif; font-size:clamp(22px,3vw,30px); color:var(--plum); font-weight:500; }
+  .stat-card .stat-label{ font-size:13px; color:var(--slate); margin-top:6px; }
+
+  .shot-frame{
+    border-radius:14px; overflow:hidden; box-shadow:0 10px 24px rgba(0,0,0,0.10);
+    border:1px solid var(--line);
+    margin:36px 0;
+  }
+  .shot-frame img{ width:100%; display:block; cursor:zoom-in; transition:opacity 0.2s ease; }
+  .shot-frame img:hover{ opacity:0.92; }
+
+  @keyframes libertyDocsAutoscroll{
+    0%{ transform:translateY(0); }
+    50%{ transform:translateY(-85%); }
+    100%{ transform:translateY(0); }
+  }
+  .autoscroll-liberty-docs{ animation:libertyDocsAutoscroll 42s ease-in-out; }
+  @keyframes libertyOverviewAutoscroll{
+    0%{ transform:translateY(0); }
+    50%{ transform:translateY(-38%); }
+    100%{ transform:translateY(0); }
+  }
+  .autoscroll-liberty-overview{ animation:libertyOverviewAutoscroll 20s ease-in-out; }
+
+  .lightbox{
+    position:fixed; inset:0; z-index:100;
+    background:rgba(20,18,22,0.92);
+    display:none; align-items:center; justify-content:center;
+    padding:40px; cursor:zoom-out;
+  }
+  .lightbox.is-open{ display:flex; }
+  .lightbox img{
+    max-width:100%; max-height:100%; border-radius:8px; box-shadow:0 30px 80px rgba(0,0,0,0.5);
+    cursor:zoom-in; transition:transform 0.35s ease; transform-origin:center center;
+  }
+  .lightbox img.is-zoomed{ cursor:zoom-out; transform:scale(3); max-width:none; max-height:none; }
+  .lightbox-close{
+    position:fixed; top:24px; right:32px; z-index:101;
+    color:#fff; font-size:28px; line-height:1; background:none; border:none; cursor:pointer;
+    font-family:-apple-system, BlinkMacSystemFont, sans-serif;
+  }
+  .shot-caption{ font-size:13px; color:var(--slate); margin:12px 0 32px; text-align:center; }
+
+  .metric-banner{
+    background:var(--plum); color:#fff; border-radius:16px;
+    padding:44px 40px; display:flex; align-items:flex-start; justify-content:space-between; gap:40px; flex-wrap:wrap;
+  }
+  .metric-banner > div{ flex:1 1 200px; }
+  .metric-banner .metric-num{ font-family:'Newsreader', serif; font-size:clamp(36px,5.5vw,56px); font-weight:500; line-height:1.05; }
+  .metric-banner .metric-txt{ font-size:15px; max-width:26ch; opacity:0.9; }
+
+  .pull-quote{
+    border-left:3px solid var(--plum); padding:6px 0 6px 28px; margin:36px 0;
+  }
+  .pull-quote p{
+    font-family:'Newsreader', serif; font-style:italic; font-weight:400;
+    font-size:clamp(19px,2.2vw,23px); color:var(--ink); margin:0 0 12px; max-width:56ch;
+  }
+  .pull-quote .attr{ font-size:13px; color:var(--slate); }
+
+  footer{
+    padding:56px 0 60px; border-top:1px solid var(--line); margin-top:40px;
+  }
+  .footer-row{ display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:20px; }
+  .footer-row a{ text-decoration:none; color:var(--paper-dim); font-size:14px; transition:color 0.2s ease; }
+  .footer-row a:hover{ color:var(--plum); }
+</style>
+</head>
+<body>
+
+<header>
+  <nav>
+    <a href="./index.html" class="nav-name">Amanda Cathey</a>
+    <div class="nav-links">
+      <a href="./index.html#hero">Home</a>
+      <a href="./index.html#about">About</a>
+      <a href="./index.html#contact">Connect</a>
+    </div>
+  </nav>
+</header>
+
+<main>
+  <div class="wrap">
+    <a href="./index.html#work" class="backlink">&larr; Back to selected projects</a>
+
+    <div class="hero">
+      <p class="eyebrow">Design Systems &middot; Liberty Mutual &amp; Safeco</p>
+      <h1><span class="hw" style="animation-delay:0s;">Building</span> <span class="hw" style="animation-delay:0.045s;">a</span> <span class="hw" style="animation-delay:0.09s;">design</span> <span class="hw" style="animation-delay:0.135s;">system</span> <span class="hw" style="animation-delay:0.18s;">across</span> <span class="hw" style="animation-delay:0.225s;">global</span> <span class="hw" style="animation-delay:0.27s;">insurance&nbsp;products</span></h1>
+      <p class="lede">Built from zero to one as a team of two, then merged with a second system that had been running in parallel for a year and a half, becoming infrastructure other teams built on across agent, employee, and customer products in the U.S. and globally.</p>
+    </div>
+
+    <div class="three-col">
+      <div class="stat-card">
+        <div class="stat-move">40% &rarr; 70%</div>
+        <div class="stat-label">Satisfaction with component design</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-move">14% &rarr; 41%</div>
+        <div class="stat-label">Code implementation adoption</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-move">41% &rarr; 66%</div>
+        <div class="stat-label">Guidelines usage</div>
+      </div>
+    </div>
+
+    <div class="shot-frame" style="height:680px; overflow:hidden; display:flex; flex-direction:column; margin-top:40px;">
+      <div style="flex:0 0 26px; display:flex; align-items:center; gap:6px; padding:0 12px; background:#f2f2f2;">
+        <span style="width:8px; height:8px; border-radius:50%; background:#e0605a; display:inline-block;"></span>
+        <span style="width:8px; height:8px; border-radius:50%; background:#e0b93f; display:inline-block;"></span>
+        <span style="width:8px; height:8px; border-radius:50%; background:#5aa85e; display:inline-block;"></span>
+      </div>
+      <img src="./liberty-header.jpg" alt="" style="width:100%; display:block; flex:0 0 auto;">
+      <div style="width:100%; flex:1 1 auto; min-height:0; display:flex; flex-direction:row;">
+        <img src="./liberty-sidebar.jpg" alt="" style="height:100%; flex:0 0 20.7%; object-fit:cover; object-position:top; display:block;">
+        <div style="flex:1 1 auto; min-height:0; display:flex; flex-direction:column;">
+          <img src="./liberty-main-header.jpg" alt="" style="width:100%; display:block; flex:0 0 auto;">
+          <div style="width:100%; flex:1 1 auto; min-height:0; overflow:hidden; position:relative;">
+            <img src="./liberty-main-body.jpg" alt="Liberty Mutual design system documentation showing brand color tokens" class="autoscroll-liberty-docs" style="width:100%; height:auto; position:absolute; top:0; left:0;">
+          </div>
+        </div>
+      </div>
+    </div>
+    <p class="shot-caption" style="margin-top:-22px;">One system, documented and shipped: color, components, and code side by side, built to be used, not just&nbsp;admired.</p>
+
+    <section>
+      <h2 class="section-title">The problem</h2>
+      <div class="section-body">
+        <p>Liberty Mutual and Safeco operated without a shared design foundation. The result was fragmented experiences that undermined brand consistency and eroded user trust at the exact touchpoints where an insurance company most needs to feel professional.</p>
+        <p>How fragmented? When I joined, even the true source of the Safeco logo and the correct brand font were unknown.</p>
+      </div>
+    </section>
+
+    <section>
+      <p class="section-eyebrow">Act 1</p>
+      <h2 class="section-title">Starting from scratch</h2>
+      <div class="section-body">
+        <p>I partnered with one other designer to apply design thinking to our own colleagues' pain points, starting with the small set of base components everything else would rely on. The early insight that shaped everything: what we'd assumed were three separate systems, Agent, Consumer, and Employee, turned out to be one system waiting to be unified.</p>
+        <p>We built a site that brought the system to life: a sandbox, React components, documentation, accessibility guidelines, and ready-to-use code snippets.</p>
+      </div>
+    </section>
+
+    <div class="two-col">
+      <div class="shot-frame" style="margin:0;">
+        <img src="./liberty-brand-guidelines.jpg" alt="Safeco brand guidelines showing logos, iconography, color, typography, spacing, and buttons">
+      </div>
+      <div class="shot-frame" style="margin:0; display:flex; align-items:center;">
+        <img src="./liberty-docs-site.jpg" alt="Safeco design system documentation showing the logo component and icon catalog">
+      </div>
+    </div>
+    <p class="shot-caption" style="margin-top:14px;">Tokens and documentation, defined together: logo lockups, Fontawesome iconography, the color story, Lato typography, spacing scale, and button states, down to usage rules and a full icon catalog, the kind of specificity that made "production-ready" mean something.</p>
+
+    <div class="shot-frame">
+      <img src="./liberty-styleguide-library.jpg" alt="Safeco style guide library covers for Consumer, Agent, and Internal Employee Tools audiences">
+    </div>
+    <p class="shot-caption" style="margin-top:-22px;">Style guides tailored to each audience: consumer, agent, and internal employee tools, sharing one underlying&nbsp;system.</p>
+
+    <section>
+      <h2 class="section-title">Making it scalable, not just usable</h2>
+      <div class="section-body">
+        <p>Components weren't enough; the system needed rules for how it would grow and stay healthy. I aligned the team on a clear intake process and a shared definition of done, so every request was triaged consistently and every decision could be explained.</p>
+        <p>We documented two paths: an <strong>All Inclusive Path</strong> for complex components needing full design, research, and QA, and a <strong>Fast Lane</strong> for simple changes. A decision tree answered the question every design system team faces: is a new pattern actually necessary, or can we amend what exists? This governance layer is what let the system scale beyond the core team.</p>
+      </div>
+    </section>
+
+    <div class="two-col">
+      <div class="shot-frame" style="margin:0;">
+        <img src="./liberty-process-allinclusive.jpg" alt="Design system process flowchart showing the All Inclusive Path and Fast Lane for intake to publish">
+      </div>
+      <div class="shot-frame" style="margin:0;">
+        <img src="./liberty-process-decisiontree.jpg" alt="Decision tree for whether a new pattern is necessary, from already-exists checks to proposing a new pattern">
+      </div>
+    </div>
+    <p class="shot-caption" style="margin-top:14px;">The governance layer: intake to publish for complex components, a fast lane for simple ones, and a decision tree so a new pattern only got added when nothing existing would&nbsp;do.</p>
+
+    <section>
+      <p class="section-eyebrow">Act 2</p>
+      <h2 class="section-title">Merging two systems into one</h2>
+      <div class="section-body">
+        <p>For 18 months, Safeco and Liberty Mutual ran parallel systems, meeting periodically but operating independently, until an audit revealed how much overlap existed and how much there was to gain by combining forces. We brought both teams into a workshop to weigh what to keep, retire, and rebuild. The team grew from two to five, and the result was a single unified system spanning agent-, employee-, and customer-facing products across U.S. and global markets.</p>
+        <p>In parallel, I joined a cross-functional team shaping updated brand guidelines for Safeco.com, pressure-testing concepts with key stakeholders before rolling the new brand into the merged system.</p>
+      </div>
+    </section>
+
+    <div class="shot-frame">
+      <img src="./liberty-before-exploration-colorwheels.jpg" alt="Before and after comparison of the Safeco homepage, and a color wheel comparison between the GRM and Safeco brand systems">
+    </div>
+    <p class="shot-caption" style="margin-top:-22px;">Before and after: a new color wheel shared with Liberty Mutual, color photography in place of stock imagery, and dated brackets and taglines&nbsp;retired.</p>
+
+    <section>
+      <h2 class="section-title">Making accessibility part of the build process</h2>
+      <div class="section-body">
+        <p>As the system matured, we brought in an accessibility expert to review components and built a simple checklist into handoff and QA. It kept the team educated and made "production-ready" mean something, not just a box checked at the end.</p>
+      </div>
+    </section>
+
+    <div class="shot-frame" style="max-width:640px; margin-left:auto; margin-right:auto;">
+      <img src="./liberty-accessibility-checklist.jpg" alt="Accessibility checklist for UX designers covering landmarks, headings, color contrast, focus visibility, and more">
+    </div>
+    <p class="shot-caption" style="margin-top:-22px;">The accessibility checklist built into handoff and QA, mapped to WCAG criteria so it held up beyond one reviewer's&nbsp;memory.</p>
+
+    <section>
+      <p class="section-eyebrow">Act 3</p>
+      <h2 class="section-title">Impact</h2>
+      <div class="section-body">
+        <p>The system stopped being a project and became infrastructure other teams built on, and the results showed up in their numbers: a 97% NPS lift on Manage My Account and $161M in new business revenue on the Independent Agent Book Transfer tool. Quarterly surveys tracked the system's own health: component satisfaction, code adoption, and guidelines usage all climbed&nbsp;steadily.</p>
+      </div>
+    </section>
+
+    <div class="shot-frame">
+      <img src="./liberty-real-screens.jpg" alt="Real Safeco products built on the design system: marketing materials, quote documents, email, and the customer website">
+    </div>
+    <p class="shot-caption" style="margin-top:-22px;">The "I just bought a policy" journey: marketing one-pager, quote document, claims cash-back enrollment email, account login, and the customer-facing site, all built from the same&nbsp;components.</p>
+
+    <div class="shot-frame">
+      <img src="./liberty-device-mockup.jpg" alt="Safeco homepage shown consistently across tablet, laptop, and mobile breakpoints">
+    </div>
+    <p class="shot-caption" style="margin-top:-22px;">Consistent across breakpoints: the same components, the same rules, from phone to&nbsp;desktop.</p>
+
+    <div class="two-col">
+      <div>
+        <p class="col-label" style="margin:0 0 10px;">Before</p>
+        <div class="shot-frame" style="margin:0; border:none; height:520px; overflow:hidden;">
+          <img src="./liberty-mma-before.jpg" alt="Before: Manage My Account page, inconsistent styling and dated layout" style="width:100%; height:520px; object-fit:cover; object-position:top;">
+        </div>
+      </div>
+      <div>
+        <p class="col-label" style="margin:0 0 10px;">After</p>
+        <div class="shot-frame" style="margin:0; border:none; height:520px; overflow:hidden;">
+          <img src="./liberty-mma-after.jpg" alt="After: Manage My Account page rebuilt on the design system" style="width:100%; height:520px; object-fit:cover; object-position:top;">
+        </div>
+      </div>
+    </div>
+    <p class="shot-caption" style="margin-top:14px;">Manage My Account, before and after: the page behind the 97% NPS lift below.</p>
+
+    <div class="shot-frame" style="padding:28px; background:#fff;">
+      <img src="./liberty-survey-chart.jpg" alt="Quarterly design system survey results, satisfaction with component design, implementation, and guidelines" style="border-radius:8px;">
+    </div>
+    <p class="shot-caption" style="margin-top:-22px;">Quarterly Design Systems Survey: 41% &rarr; 71% component satisfaction, 14% &rarr; 47% code adoption, 41% &rarr; 66% guidelines usage.</p>
+
+    <section>
+      <h2 class="section-title">The system today</h2>
+      <div class="section-body">
+        <p>The documentation site carries that same specificity all the way through: a welcome page and roadmap, full color and accessibility guidance, and component pages with usage rules, live code snippets, and a sign-off checklist before anything&nbsp;ships.</p>
+      </div>
+    </section>
+
+    <div class="three-col" style="align-items:start;">
+      <div class="shot-frame" style="margin:0;">
+        <img src="./liberty-grm-overview.jpg" alt="Liberty Mutual GRM design system documentation, Overview page with what's new, what's coming, and designer and developer tools">
+      </div>
+      <div class="shot-frame" style="margin:0;">
+        <img src="./liberty-grm-color-full.jpg" alt="Liberty Mutual GRM design system documentation, Color page with full palette and WCAG accessibility guidance">
+      </div>
+      <div class="shot-frame" style="margin:0;">
+        <img src="./liberty-grm-buttons.jpg" alt="Liberty Mutual GRM design system documentation, Buttons component page with states, live code snippets, and a component checklist">
+      </div>
+    </div>
+    <p class="shot-caption" style="margin-top:14px;">Overview, Color, and Buttons: three pages of one documentation site, each carried to the same level of&nbsp;detail.</p>
+
+    <section>
+      <h2 class="section-title">Outcomes</h2>
+      <div class="section-body">
+        <p>The system didn't just create consistency, it became infrastructure other teams built on, and the results showed up in their numbers.</p>
+      </div>
+      <div class="metric-banner">
+        <div>
+          <div class="metric-num">97%</div>
+          <div class="metric-txt">NPS lift on Manage My&nbsp;Account</div>
+        </div>
+        <div>
+          <div class="metric-num">$161M</div>
+          <div class="metric-txt">New business revenue on the Independent Agent Book Transfer&nbsp;tool</div>
+        </div>
+      </div>
+      <div class="pull-quote">
+        <p>"We built a portion of our app before and it took 9 months. With the GRM Design System we were able to build out that portion in 4 weeks."</p>
+        <p class="attr">— Liberty Mutual Sales Flow, developer</p>
+      </div>
+    </section>
+
+    <section>
+      <h2 class="section-title">What I'd take from this</h2>
+      <div class="section-body">
+        <p>Running parallel systems for 18 months was a good exercise. Both teams sharpened their thinking independently, and the workshop where we merged was stronger for it. But if I did it again, I'd push for consolidating the teams much earlier. The audit that triggered the merger didn't reveal new overlap, it revealed overlap that had existed the whole time, and we paid for it in duplicated components, parallel decisions, and patterns that later had to be reconciled.</p>
+        <p>The lesson I carry forward: when two teams are solving the same problem side by side, the question isn't whether to combine forces, it's how much it costs to wait.</p>
+      </div>
+    </section>
+
+    <div class="meta-row" style="margin-top:16px;">
+      <div class="meta-item">
+        <p class="meta-label">Role</p>
+        <p class="meta-value">Senior Product Designer</p>
+      </div>
+      <div class="meta-item">
+        <p class="meta-label">Industry</p>
+        <p class="meta-value">Insurance</p>
+      </div>
+      <div class="meta-item">
+        <p class="meta-label">Timeline</p>
+        <p class="meta-value">3 years</p>
+      </div>
+    </div>
+  </div>
+</main>
+
+<footer>
+  <div class="wrap footer-row">
+    <a href="./index.html#work">&larr; Back to selected projects</a>
+    <a href="./index.html#contact">Get in touch &rarr;</a>
+  </div>
+</footer>
+
+<div class="lightbox" id="lightbox">
+  <button class="lightbox-close" aria-label="Close">&times;</button>
+  <img id="lightbox-img" src="" alt="">
+</div>
+
+<script>
+  (function(){
+    var lightbox = document.getElementById('lightbox');
+    var lightboxImg = document.getElementById('lightbox-img');
+    document.querySelectorAll('.shot-frame img').forEach(function(img){
+      img.addEventListener('click', function(){
+        lightboxImg.src = img.src;
+        lightboxImg.alt = img.alt;
+        lightboxImg.classList.remove('is-zoomed');
+        lightbox.classList.add('is-open');
+      });
+    });
+    function closeLightbox(){ lightbox.classList.remove('is-open'); lightboxImg.src=''; lightboxImg.classList.remove('is-zoomed'); }
+    lightbox.addEventListener('click', closeLightbox);
+    lightboxImg.addEventListener('mousemove', function(e){
+      if(!lightboxImg.classList.contains('is-zoomed')) return;
+      var rect = lightboxImg.getBoundingClientRect();
+      var xPct = ((e.clientX - rect.left) / rect.width) * 100;
+      var yPct = ((e.clientY - rect.top) / rect.height) * 100;
+      lightboxImg.style.transformOrigin = xPct + '% ' + yPct + '%';
+    });
+    lightboxImg.addEventListener('click', function(e){
+      e.stopPropagation();
+      if(lightboxImg.classList.contains('is-zoomed')){
+        lightboxImg.classList.remove('is-zoomed');
+        lightboxImg.style.transition = 'transform 0.35s ease';
+      } else {
+        var rect = lightboxImg.getBoundingClientRect();
+        var xPct = ((e.clientX - rect.left) / rect.width) * 100;
+        var yPct = ((e.clientY - rect.top) / rect.height) * 100;
+        lightboxImg.style.transition = 'transform 0.35s ease';
+        lightboxImg.style.transformOrigin = xPct + '% ' + yPct + '%';
+        lightboxImg.classList.add('is-zoomed');
+        setTimeout(function(){ lightboxImg.style.transition = 'none'; }, 350);
+      }
+    });
+    document.addEventListener('keydown', function(e){ if(e.key === 'Escape') closeLightbox(); });
+  })();
+</script>
+
+</body>
+</html>

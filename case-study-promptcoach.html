@@ -1,0 +1,487 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Prompt Coach: designing the human side of AI — Amanda Cathey</title>
+<meta name="description" content="Case study: Prompt Coach, a 72-hour hackathon build that shipped to production as part of Compass AI, and won the #MoveFast Award at the 2023 Compass Hackathon.">
+<link rel="canonical" href="https://amandacathey.com/case-study-promptcoach.html">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Prompt Coach: designing the human side of AI — Amanda Cathey">
+<meta property="og:description" content="Case study: Prompt Coach, a 72-hour hackathon build that shipped to production as part of Compass AI, and won the #MoveFast Award at the 2023 Compass Hackathon.">
+<meta property="og:url" content="https://amandacathey.com/case-study-promptcoach.html">
+<meta property="og:image" content="https://amandacathey.com/case-study-promptcoach-og.jpg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Prompt Coach: designing the human side of AI — Amanda Cathey">
+<meta name="twitter:description" content="Case study: Prompt Coach, a 72-hour hackathon build that shipped to production as part of Compass AI, and won the #MoveFast Award at the 2023 Compass Hackathon.">
+<meta name="twitter:image" content="https://amandacathey.com/case-study-promptcoach-og.jpg">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' fill='%23000000'/%3E%3Ccircle cx='16' cy='16' r='9' fill='%23ffffff'/%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;0,6..72,600;0,6..72,700;1,6..72,400;1,6..72,500;1,6..72,600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --ink:#1c1a22;
+    --paper:#ffffff;
+    --card-tan:#f1ece2;
+    --paper-dim:#57555f;
+    --plum:#652174;
+    --brass:#9c6f28;
+    --slate:#6f6d78;
+    --line: rgba(23,22,29,0.11);
+    --maxw: 1120px;
+  }
+  *{box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{
+    margin:0;
+    background:var(--paper);
+    color:var(--ink);
+    font-family:-apple-system, BlinkMacSystemFont, sans-serif;
+    font-size:16px;
+    line-height:1.6;
+    -webkit-font-smoothing:antialiased;
+  }
+  @media (prefers-reduced-motion: reduce){
+    *{animation-duration:0.01ms !important; transition-duration:0.01ms !important;}
+  }
+  ::selection{background:var(--plum); color:#ffffff;}
+  a{color:inherit;}
+  a:focus-visible, button:focus-visible{ outline:2px solid var(--plum); outline-offset:3px; border-radius:2px; }
+  .wrap{max-width:var(--maxw); margin:0 auto; padding:0 32px;}
+
+  header{
+    position:sticky; top:0; z-index:10;
+    background:rgba(255,255,255,0.86);
+    backdrop-filter:blur(10px);
+    border-bottom:1px solid var(--line);
+  }
+  nav{
+    display:flex; align-items:center; justify-content:space-between;
+    padding:20px 32px;
+    max-width:var(--maxw); margin:0 auto;
+  }
+  .nav-name{
+    font-family:'Newsreader', serif; font-size:21px; font-weight:600; letter-spacing:-0.005em;
+    color:var(--ink); text-decoration:none; transition:color 0.25s ease;
+  }
+  .nav-name:hover{ color:var(--plum); }
+  .nav-links{ display:flex; gap:28px; }
+  .nav-links a{
+    font-size:13px; text-decoration:none; color:var(--paper-dim); letter-spacing:0.02em;
+    padding:8px 2px; position:relative; transition:color 0.2s ease;
+  }
+  .nav-links a::after{
+    content:''; position:absolute; left:2px; right:2px; bottom:2px; height:1px;
+    background:#ff1f8f; transform:scaleX(0); transform-origin:left; transition:transform 0.25s ease;
+  }
+  .nav-links a:hover::after{ transform:scaleX(1); }
+  .nav-links a:hover{ color:var(--ink); }
+
+  .backlink{
+    display:inline-flex; align-items:center; gap:8px;
+    font-size:13px; color:var(--paper-dim); text-decoration:none;
+    margin:40px 0 24px;
+    transition:color 0.2s ease;
+  }
+  .backlink:hover{ color:var(--plum); }
+
+  .hero{ padding:0 0 48px; }
+  .eyebrow{
+    font-family:-apple-system, BlinkMacSystemFont, sans-serif;
+    font-size:11px; letter-spacing:0.14em; text-transform:uppercase; color:var(--slate);
+  }
+  h1{
+    font-family:'Newsreader', serif; font-weight:500;
+    font-size:clamp(32px,5vw,54px); line-height:1.1; letter-spacing:-0.01em;
+    margin:14px 0 20px; max-width:20ch; color:var(--plum);
+  }
+  .hw{
+    display:inline-block;
+    opacity:0;
+    transform:translateY(14px);
+    animation:hwRipple 0.65s ease-out forwards;
+  }
+  @keyframes hwRipple{
+    to{ opacity:1; transform:translateY(0); }
+  }
+  .lede{ font-size:16px; color:var(--paper-dim); max-width:62ch; margin:0; }
+
+  .meta-row{
+    display:flex; flex-wrap:wrap; gap:40px;
+    padding:28px 0; margin:36px 0 0; border-top:1px solid var(--line); border-bottom:1px solid var(--line);
+  }
+  .meta-item .meta-label{ font-size:11px; letter-spacing:0.08em; text-transform:uppercase; color:var(--slate); margin:0 0 6px; }
+  .meta-item .meta-value{ font-size:15px; color:var(--ink); }
+
+  section{ padding:56px 0; }
+  .section-title{
+    font-family:'Newsreader', serif; font-weight:500; font-size:clamp(22px,2.8vw,30px);
+    margin:0 0 18px; color:var(--ink);
+  }
+  .section-eyebrow{
+    font-family:-apple-system, BlinkMacSystemFont, sans-serif;
+    font-size:11px; letter-spacing:0.1em; text-transform:uppercase; color:var(--brass); margin:0 0 8px;
+  }
+  .section-body p{ color:var(--paper-dim); font-size:16px; max-width:70ch; margin:0 0 16px; }
+  .section-body strong{ color:var(--ink); font-weight:500; }
+
+  .three-col{ display:grid; grid-template-columns:1fr 1fr 1fr; gap:28px; }
+  @media (max-width:760px){ .three-col{ grid-template-columns:1fr; gap:28px; } }
+  .stat-card{ text-align:center; padding:8px; }
+  .stat-card .stat-move{ font-family:'Newsreader', serif; font-size:clamp(20px,3vw,28px); color:var(--plum); font-weight:500; }
+  .stat-card .stat-label{ font-size:13px; color:var(--slate); margin-top:6px; }
+
+  .four-col{ display:grid; grid-template-columns:repeat(4,1fr); gap:20px; }
+  @media (max-width:760px){ .four-col{ grid-template-columns:1fr 1fr; } }
+  .four-col figure{ margin:0; }
+  .four-col .col-label{ display:block; margin:12px 0 0; text-align:center; }
+  .four-col .shot-frame{ border-radius:6px; }
+
+  .pc-cycle .shot-frame{ position:relative; }
+  .pc-cycle .shot-frame img.pc-cycle-img{ display:none; }
+  .pc-cycle .shot-frame img.pc-cycle-img.is-active{ display:block; }
+  .pc-cycle-dots{ display:flex; justify-content:center; gap:8px; margin-top:16px; }
+  .pc-dot{
+    width:8px; height:8px; border-radius:50%; background:var(--line); border:none; padding:0;
+    cursor:pointer; transition:background 0.2s ease, transform 0.2s ease;
+  }
+  .pc-dot.is-active{ background:var(--plum); transform:scale(1.2); }
+
+  .shot-frame{
+    border-radius:14px; overflow:hidden; box-shadow:0 10px 24px rgba(0,0,0,0.10);
+    border:1px solid var(--line);
+    margin:0;
+  }
+  .shot-frame img{ width:100%; display:block; cursor:zoom-in; transition:opacity 0.2s ease; }
+  .shot-frame img:hover{ opacity:0.92; }
+
+  .lightbox{
+    position:fixed; inset:0; z-index:100;
+    background:rgba(20,18,22,0.92);
+    display:none; align-items:center; justify-content:center;
+    padding:40px; cursor:zoom-out;
+  }
+  .lightbox.is-open{ display:flex; }
+  .lightbox img{ max-width:100%; max-height:100%; border-radius:8px; box-shadow:0 30px 80px rgba(0,0,0,0.5); }
+  .lightbox-close{
+    position:fixed; top:24px; right:32px; z-index:101;
+    color:#fff; font-size:28px; line-height:1; background:none; border:none; cursor:pointer;
+    font-family:-apple-system, BlinkMacSystemFont, sans-serif;
+  }
+  .lightbox-nav{
+    position:fixed; top:50%; transform:translateY(-50%); z-index:101;
+    color:#fff; font-size:36px; line-height:1; background:rgba(255,255,255,0.1); border:none; cursor:pointer;
+    width:48px; height:48px; border-radius:50%; display:flex; align-items:center; justify-content:center;
+    transition:background 0.2s ease;
+  }
+  .lightbox-nav:hover{ background:rgba(255,255,255,0.2); }
+  .lightbox-prev{ left:16px; }
+  .lightbox-next{ right:16px; }
+  .lightbox-label{
+    position:fixed; bottom:24px; left:50%; transform:translateX(-50%); z-index:101;
+    color:#fff; font-size:13px; opacity:0.85; font-family:-apple-system, BlinkMacSystemFont, sans-serif;
+    letter-spacing:0.04em;
+  }
+  .col-label{ font-size:11px; letter-spacing:0.08em; text-transform:uppercase; color:var(--brass); }
+  .shot-caption{ font-size:13px; color:var(--slate); margin:12px 0 44px; text-align:center; }
+
+  .metric-banner{
+    background:var(--plum); color:#fff; border-radius:16px;
+    padding:44px 40px; display:flex; align-items:flex-start; justify-content:space-between; gap:40px; flex-wrap:wrap;
+  }
+  .metric-banner > div{ flex:1 1 200px; }
+  .metric-banner .metric-num{ font-family:'Newsreader', serif; font-size:clamp(28px,4.4vw,42px); font-weight:500; line-height:1.05; }
+  .metric-banner .metric-txt{ font-size:15px; max-width:28ch; opacity:0.9; }
+
+  footer{
+    padding:56px 0 60px; border-top:1px solid var(--line); margin-top:40px;
+  }
+  .footer-row{ display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:20px; }
+  .footer-row a{ text-decoration:none; color:var(--paper-dim); font-size:14px; transition:color 0.2s ease; }
+  .footer-row a:hover{ color:var(--plum); }
+</style>
+</head>
+<body>
+
+<header>
+  <nav>
+    <a href="./index.html" class="nav-name">Amanda Cathey</a>
+    <div class="nav-links">
+      <a href="./index.html#hero">Home</a>
+      <a href="./index.html#about">About</a>
+      <a href="./index.html#contact">Connect</a>
+    </div>
+  </nav>
+</header>
+
+<main>
+  <div class="wrap">
+    <a href="./index.html#work" class="backlink">&larr; Back to selected projects</a>
+
+    <div class="hero">
+      <p class="eyebrow">AI Product &middot; Compass</p>
+      <h1><span class="hw" style="animation-delay:0s;">Prompt</span> <span class="hw" style="animation-delay:0.045s;">Coach:</span> <span class="hw" style="animation-delay:0.09s;">designing</span> <span class="hw" style="animation-delay:0.135s;">the</span> <span class="hw" style="animation-delay:0.18s;">human</span> <span class="hw" style="animation-delay:0.225s;">side</span> <span class="hw" style="animation-delay:0.27s;">of&nbsp;AI</span></h1>
+      <p class="lede">A 72-hour hackathon build that took a cross-functional team of six from concept to production-ready, won the #MoveFast Award at the 2023 Compass Hackathon, and shipped as part of Compass AI, where agents use it today.</p>
+    </div>
+
+    <div class="three-col">
+      <div class="stat-card">
+        <div class="stat-move">72 hrs</div>
+        <div class="stat-label">Concept to production-ready</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-move">6</div>
+        <div class="stat-label">Cross-functional team, one sprint</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-move">#MoveFast</div>
+        <div class="stat-label">2023 Compass Hackathon Award</div>
+      </div>
+    </div>
+
+    <div class="shot-frame" style="margin-top:40px;">
+      <img src="./prompt-coach-hero.jpg" alt="Compass AI chat interface showing topic options: Listing Description, Team Biography, Social Media Post, and Marketing Ideas">
+    </div>
+    <p class="shot-caption">Compass AI today: Prompt Coach's topic-first approach, live in&nbsp;production.</p>
+
+    <section>
+      <h2 class="section-title">The problem</h2>
+      <div class="section-body">
+        <p>Real estate agents needed personalized, platform-ready marketing copy, and generic AI output wasn't cutting it. Before Prompt Coach, agents either avoided AI entirely or pasted generic requests into Compass AI, our own AI embedded in the platform, and got copy that sounded nothing like them. The missing piece wasn't the AI, it was the UX layer that helped users give the AI what it needed.</p>
+      </div>
+    </section>
+
+    <section>
+      <h2 class="section-title">Discovery: straight to the agents</h2>
+      <div class="section-body">
+        <p>One of our six was an Agent Experience Manager out of the Compass Malibu office. She connected us with agents who walked us through their frustrations firsthand: generic output, copy that didn't sound like them, prompts they didn't know how to write. Those conversations shaped the concept, and we tested the tool with the same agents before submitting.</p>
+      </div>
+    </section>
+
+    <section>
+      <h2 class="section-title">Solution: the interface does the prompting</h2>
+      <div class="section-body">
+        <p>Prompt Coach guided agents through a structured workflow, auto-populating MLS listing data and capturing tone, audience, and brand voice upfront. By the time the AI generated copy, it sounded like the agent, not a template. The user never had to learn prompting, the interface did that work invisibly.</p>
+      </div>
+      <div class="shot-frame">
+        <img src="./prompt-coach-flow.jpg" alt="Diagram of the Prompt Coach flow: agent steps through choosing listing type, reviewing MLS data, adding a personal description, and defining voice and audience, while the system layer establishes context, auto-fills MLS data, captures agent voice, and assembles the prompt the AI model generates from">
+      </div>
+      <p class="shot-caption">The interface does the prompting: a simple 4-step guided form for the agent, a fully structured, personalized prompt for the AI, invisibly assembled underneath.</p>
+      <div class="pc-cycle" style="max-width:640px; margin:0 auto;">
+        <div class="shot-frame">
+          <img src="./pc-listing.jpg" alt="Compass AI writing tool, Listing Description topic selected" data-gallery="pc-topics" data-label="Listing Description" class="pc-cycle-img is-active">
+          <img src="./pc-team.jpg" alt="Compass AI writing tool, Team Biography topic selected" data-gallery="pc-topics" data-label="Team Biography" class="pc-cycle-img">
+          <img src="./pc-social.jpg" alt="Compass AI writing tool, Social Media Post topic selected" data-gallery="pc-topics" data-label="Social Media Post" class="pc-cycle-img">
+          <img src="./pc-marketing.jpg" alt="Compass AI writing tool, Marketing Ideas topic selected" data-gallery="pc-topics" data-label="Marketing Ideas" class="pc-cycle-img">
+        </div>
+        <div class="pc-cycle-dots">
+          <button class="pc-dot is-active" data-index="0" aria-label="Listing Description"></button>
+          <button class="pc-dot" data-index="1" aria-label="Team Biography"></button>
+          <button class="pc-dot" data-index="2" aria-label="Social Media Post"></button>
+          <button class="pc-dot" data-index="3" aria-label="Marketing Ideas"></button>
+        </div>
+      </div>
+      <p class="shot-caption" id="pc-cycle-caption">Listing Description &mdash; Prompt Coach, live in production as Compass AI: four guided topics, each pre-loaded with the context the model needs to sound like the agent, not a template.</p>
+    </section>
+
+    <section>
+      <h2 class="section-title">See it in action</h2>
+      <div class="section-body">
+        <p>The hackathon prototype: the guided flow agents step through, from choosing a listing type to landing on personalized, on-voice marketing copy.</p>
+      </div>
+      <div class="shot-frame" style="padding:0;">
+        <iframe style="border:none; width:100%; height:640px; display:block;" src="https://www.figma.com/embed?embed_host=share&hotspot-hints=0&url=https%3A%2F%2Fwww.figma.com%2Fproto%2FlGkoCR8iU7cNDRfyqYTn68%2FHackathon_Prompt-Coach%3Fnode-id%3D37-3722%26p%3Df%26t%3DbqM9weNJevRYi6E1-1%26scaling%3Dscale-down%26content-scaling%3Dfixed%26page-id%3D1%253A1110%26starting-point-node-id%3D37%253A3722%26hotspot-hints%3D0" allowfullscreen></iframe>
+      </div>
+      <p class="shot-caption">Interactive, click through the prototype above.</p>
+    </section>
+
+    <section>
+      <h2 class="section-title">The team: 72 hours, six people, one shipped feature</h2>
+      <div class="section-body">
+        <p>I led UX and UI across a cross-functional team of six, including the Agent Experience Manager and front-end and back-end engineers, taking the concept to production-ready in 72 hours.</p>
+      </div>
+    </section>
+
+    <section>
+      <h2 class="section-title">Outcome</h2>
+      <div class="section-body">
+        <p>Prompt Coach won the #MoveFast Award at the 2023 Compass Hackathon and shipped to production, where agents use it as part of Compass AI. The hackathon proved the idea viable and shippable, the product team carried it forward from there.</p>
+      </div>
+      <div class="metric-banner">
+        <div>
+          <div class="metric-num">#MoveFast</div>
+          <div class="metric-txt">Award, 2023 Compass&nbsp;Hackathon</div>
+        </div>
+        <div>
+          <div class="metric-num">Shipped</div>
+          <div class="metric-txt">Live in production as part of Compass&nbsp;AI</div>
+        </div>
+      </div>
+      <div class="shot-frame" style="max-width:640px; margin:36px auto 0;">
+        <img src="./prompt-coach-award.jpg" alt="2023 Compass Hackathon #MoveFast Award slide for Compass Prompt Coach, with the team: Amanda Cathey, Kfir Ankori, Aditya Muthyala, Yang Liu, Pradeep Konda, and Rachel Russell-Clark">
+      </div>
+      <p class="shot-caption">The #MoveFast Award, 2023 Compass Hackathon, with the six-person team behind Prompt Coach.</p>
+    </section>
+
+    <section>
+      <h2 class="section-title">What I'd take from this</h2>
+      <div class="section-body">
+        <p>Prompt Coach taught me where the real design problem in AI lives. It isn't making the model smarter; it's helping humans express intent. Agents knew exactly what they wanted, they just had no way to say it to a machine. That translation is a UX problem, and it's the lens I've brought to every AI project since.</p>
+        <p><strong>What I'd do differently:</strong> stay closer to the feature after handoff. The 72-hour sprint was the headline, but the learning I gave up was in the long tail of how agents actually used it.</p>
+      </div>
+    </section>
+
+    <div class="meta-row" style="margin-top:16px;">
+      <div class="meta-item">
+        <p class="meta-label">Role</p>
+        <p class="meta-value">Product design lead</p>
+      </div>
+      <div class="meta-item">
+        <p class="meta-label">Industry</p>
+        <p class="meta-value">Real estate tech</p>
+      </div>
+      <div class="meta-item">
+        <p class="meta-label">Timeline</p>
+        <p class="meta-value">72 Hours</p>
+      </div>
+    </div>
+  </div>
+</main>
+
+<footer>
+  <div class="wrap footer-row">
+    <a href="./index.html#work">&larr; Back to selected projects</a>
+    <a href="./index.html#contact">Get in touch &rarr;</a>
+  </div>
+</footer>
+
+<div class="lightbox" id="lightbox">
+  <button class="lightbox-close" aria-label="Close">&times;</button>
+  <button class="lightbox-nav lightbox-prev" aria-label="Previous">&#8249;</button>
+  <img id="lightbox-img" src="" alt="">
+  <button class="lightbox-nav lightbox-next" aria-label="Next">&#8250;</button>
+  <p class="lightbox-label" id="lightbox-label"></p>
+</div>
+
+<script>
+  (function(){
+    var lightbox = document.getElementById('lightbox');
+    var lightboxImg = document.getElementById('lightbox-img');
+    var lightboxLabel = document.getElementById('lightbox-label');
+    var prevBtn = lightbox.querySelector('.lightbox-prev');
+    var nextBtn = lightbox.querySelector('.lightbox-next');
+    var galleries = {};
+    document.querySelectorAll('.shot-frame img').forEach(function(img){
+      var g = img.getAttribute('data-gallery');
+      if(g){
+        if(!galleries[g]) galleries[g] = [];
+        galleries[g].push(img);
+      }
+    });
+    var currentGallery = null;
+    var currentIndex = 0;
+    var lbTimer = null;
+
+    function stopLbAutoplay(){ if(lbTimer){ clearInterval(lbTimer); lbTimer = null; } }
+    function startLbAutoplay(){
+      stopLbAutoplay();
+      if(currentGallery && currentGallery.length > 1){
+        lbTimer = setInterval(function(){ goNext(); }, 3200);
+      }
+    }
+
+    function showImage(img){
+      lightboxImg.src = img.src;
+      lightboxImg.alt = img.alt;
+      var g = img.getAttribute('data-gallery');
+      if(g && galleries[g] && galleries[g].length > 1){
+        currentGallery = galleries[g];
+        currentIndex = currentGallery.indexOf(img);
+        prevBtn.style.display = 'flex';
+        nextBtn.style.display = 'flex';
+        var label = img.getAttribute('data-label') || '';
+        lightboxLabel.textContent = label + ' (' + (currentIndex + 1) + '/' + currentGallery.length + ')';
+        lightboxLabel.style.display = 'block';
+      } else {
+        currentGallery = null;
+        prevBtn.style.display = 'none';
+        nextBtn.style.display = 'none';
+        lightboxLabel.style.display = 'none';
+      }
+    }
+
+    document.querySelectorAll('.shot-frame img').forEach(function(img){
+      img.addEventListener('click', function(){
+        showImage(img);
+        lightbox.classList.add('is-open');
+        startLbAutoplay();
+      });
+    });
+
+    function goPrev(){
+      if(!currentGallery) return;
+      currentIndex = (currentIndex - 1 + currentGallery.length) % currentGallery.length;
+      showImage(currentGallery[currentIndex]);
+    }
+    function goNext(){
+      if(!currentGallery) return;
+      currentIndex = (currentIndex + 1) % currentGallery.length;
+      showImage(currentGallery[currentIndex]);
+    }
+    prevBtn.addEventListener('click', function(e){ e.stopPropagation(); goPrev(); startLbAutoplay(); });
+    nextBtn.addEventListener('click', function(e){ e.stopPropagation(); goNext(); startLbAutoplay(); });
+    lightboxImg.addEventListener('mouseenter', stopLbAutoplay);
+    lightboxImg.addEventListener('mouseleave', startLbAutoplay);
+
+    function closeLightbox(){ lightbox.classList.remove('is-open'); lightboxImg.src=''; currentGallery = null; stopLbAutoplay(); }
+    lightbox.addEventListener('click', closeLightbox);
+    document.addEventListener('keydown', function(e){
+      if(!lightbox.classList.contains('is-open')) return;
+      if(e.key === 'Escape') closeLightbox();
+      if(e.key === 'ArrowLeft'){ goPrev(); startLbAutoplay(); }
+      if(e.key === 'ArrowRight'){ goNext(); startLbAutoplay(); }
+    });
+  })();
+
+  (function(){
+    var frame = document.querySelector('.pc-cycle');
+    if(!frame) return;
+    var imgs = Array.prototype.slice.call(frame.querySelectorAll('.pc-cycle-img'));
+    var dots = Array.prototype.slice.call(frame.querySelectorAll('.pc-dot'));
+    var caption = document.getElementById('pc-cycle-caption');
+    var baseCaption = "Prompt Coach, live in production as Compass AI: four guided topics, each pre-loaded with the context the model needs to sound like the agent, not a template.";
+    var index = 0;
+    var timer = null;
+
+    function render(){
+      imgs.forEach(function(img, i){ img.classList.toggle('is-active', i === index); });
+      dots.forEach(function(dot, i){ dot.classList.toggle('is-active', i === index); });
+      if(caption){
+        var label = imgs[index].getAttribute('data-label') || '';
+        caption.innerHTML = label + ' &mdash; ' + baseCaption;
+      }
+    }
+    function advance(){ index = (index + 1) % imgs.length; render(); }
+    function start(){ stop(); timer = setInterval(advance, 3200); }
+    function stop(){ if(timer){ clearInterval(timer); timer = null; } }
+
+    dots.forEach(function(dot, i){
+      dot.addEventListener('click', function(){
+        index = i;
+        render();
+        start();
+      });
+    });
+    frame.addEventListener('mouseenter', stop);
+    frame.addEventListener('mouseleave', start);
+
+    render();
+    start();
+  })();
+</script>
+
+</body>
+</html>

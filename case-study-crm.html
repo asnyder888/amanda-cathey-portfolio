@@ -1,0 +1,578 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Designing a unified CRM that lifted usage 20% — Amanda Cathey</title>
+<meta name="description" content="Case study: three separate CRM initiatives shipped over two years, relationship statuses, redesigned filtering, and a rebuilt contact detail page, that together lifted usage 20% year-over-year.">
+<link rel="canonical" href="https://amandacathey.com/case-study-crm.html">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Designing a unified CRM that lifted usage 20% — Amanda Cathey">
+<meta property="og:description" content="Case study: three separate CRM initiatives shipped over two years, relationship statuses, redesigned filtering, and a rebuilt contact detail page, that together lifted usage 20% year-over-year.">
+<meta property="og:url" content="https://amandacathey.com/case-study-crm.html">
+<meta property="og:image" content="https://amandacathey.com/case-study-crm-og.jpg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Designing a unified CRM that lifted usage 20% — Amanda Cathey">
+<meta name="twitter:description" content="Case study: three separate CRM initiatives shipped over two years, relationship statuses, redesigned filtering, and a rebuilt contact detail page, that together lifted usage 20% year-over-year.">
+<meta name="twitter:image" content="https://amandacathey.com/case-study-crm-og.jpg">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' fill='%23000000'/%3E%3Ccircle cx='16' cy='16' r='9' fill='%23ffffff'/%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;0,6..72,600;0,6..72,700;1,6..72,400;1,6..72,500;1,6..72,600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --ink:#1c1a22;
+    --paper:#ffffff;
+    --card-tan:#f1ece2;
+    --paper-dim:#57555f;
+    --plum:#652174;
+    --brass:#9c6f28;
+    --slate:#6f6d78;
+    --line: rgba(23,22,29,0.11);
+    --maxw: 1120px;
+  }
+  *{box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{
+    margin:0;
+    background:var(--paper);
+    color:var(--ink);
+    font-family:-apple-system, BlinkMacSystemFont, sans-serif;
+    font-size:16px;
+    line-height:1.6;
+    -webkit-font-smoothing:antialiased;
+  }
+  @media (prefers-reduced-motion: reduce){
+    *{animation-duration:0.01ms !important; transition-duration:0.01ms !important;}
+  }
+  ::selection{background:var(--plum); color:#ffffff;}
+  a{color:inherit;}
+  a:focus-visible, button:focus-visible{ outline:2px solid var(--plum); outline-offset:3px; border-radius:2px; }
+  .wrap{max-width:var(--maxw); margin:0 auto; padding:0 32px;}
+
+  header{
+    position:sticky; top:0; z-index:10;
+    background:rgba(255,255,255,0.86);
+    backdrop-filter:blur(10px);
+    border-bottom:1px solid var(--line);
+  }
+  nav{
+    display:flex; align-items:center; justify-content:space-between;
+    padding:20px 32px;
+    max-width:var(--maxw); margin:0 auto;
+  }
+  .nav-name{
+    font-family:'Newsreader', serif; font-size:21px; font-weight:600; letter-spacing:-0.005em;
+    color:var(--ink); text-decoration:none; transition:color 0.25s ease;
+  }
+  .nav-name:hover{ color:var(--plum); }
+  .nav-links{ display:flex; gap:28px; }
+  .nav-links a{
+    font-size:13px; text-decoration:none; color:var(--paper-dim); letter-spacing:0.02em;
+    padding:8px 2px; position:relative; transition:color 0.2s ease;
+  }
+  .nav-links a::after{
+    content:''; position:absolute; left:2px; right:2px; bottom:2px; height:1px;
+    background:#ff1f8f; transform:scaleX(0); transform-origin:left; transition:transform 0.25s ease;
+  }
+  .nav-links a:hover::after{ transform:scaleX(1); }
+  .nav-links a:hover{ color:var(--ink); }
+
+  .backlink{
+    display:inline-flex; align-items:center; gap:8px;
+    font-size:13px; color:var(--paper-dim); text-decoration:none;
+    margin:40px 0 24px;
+    transition:color 0.2s ease;
+  }
+  .backlink:hover{ color:var(--plum); }
+
+  .hero{ padding:0 0 48px; }
+  .eyebrow{
+    font-family:-apple-system, BlinkMacSystemFont, sans-serif;
+    font-size:11px; letter-spacing:0.14em; text-transform:uppercase; color:var(--slate);
+  }
+  h1{
+    font-family:'Newsreader', serif; font-weight:500;
+    font-size:clamp(32px,5vw,54px); line-height:1.1; letter-spacing:-0.01em;
+    margin:14px 0 20px; max-width:18ch; color:var(--plum);
+  }
+  .hw{
+    display:inline-block;
+    opacity:0;
+    transform:translateY(7px);
+    animation:hwRipple 0.65s ease-out forwards;
+  }
+  @keyframes hwRipple{
+    to{ opacity:1; transform:translateY(0); }
+  }
+  .lede{ font-size:16px; color:var(--paper-dim); max-width:62ch; margin:0; }
+
+  .meta-row{
+    display:flex; flex-wrap:wrap; gap:40px;
+    padding:28px 0; margin:36px 0 0; border-top:1px solid var(--line); border-bottom:1px solid var(--line);
+  }
+  .meta-item .meta-label{ font-size:11px; letter-spacing:0.08em; text-transform:uppercase; color:var(--slate); margin:0 0 6px; }
+  .meta-item .meta-value{ font-size:15px; color:var(--ink); }
+
+  section{ padding:56px 0; }
+  .section-title{
+    font-family:'Newsreader', serif; font-weight:500; font-size:clamp(22px,2.8vw,30px);
+    margin:0 0 18px; color:var(--ink);
+  }
+  .section-eyebrow{
+    font-family:-apple-system, BlinkMacSystemFont, sans-serif;
+    font-size:11px; letter-spacing:0.1em; text-transform:uppercase; color:var(--brass); margin:0 0 8px;
+  }
+  .section-body p{ color:var(--paper-dim); font-size:16px; max-width:70ch; margin:0 0 16px; }
+  .section-body strong{ color:var(--ink); font-weight:500; }
+
+  .two-col{ display:grid; grid-template-columns:1fr 1fr; gap:48px; }
+  @media (max-width:760px){ .two-col{ grid-template-columns:1fr; gap:28px; } }
+  .col-card{ background:var(--card-tan); border-radius:16px; padding:28px 28px 30px; }
+  .col-card .col-label{ font-size:11px; letter-spacing:0.08em; text-transform:uppercase; color:var(--brass); margin:0 0 10px; display:block; }
+  .col-label{ font-size:11px; letter-spacing:0.08em; text-transform:uppercase; color:var(--brass); }
+  .col-card p{ color:var(--paper-dim); font-size:15px; margin:0; }
+  .col-card h3{ font-family:'Newsreader', serif; font-weight:500; font-size:17px; margin:0 0 8px; color:var(--ink); }
+
+  .three-col{ display:grid; grid-template-columns:1fr 1fr 1fr; gap:28px; }
+  @media (max-width:760px){ .three-col{ grid-template-columns:1fr; gap:28px; } }
+  .stat-card{ text-align:center; padding:8px; }
+  .stat-card .stat-move{ font-family:'Newsreader', serif; font-size:clamp(22px,3vw,30px); color:var(--plum); font-weight:500; }
+  .stat-card .stat-label{ font-size:13px; color:var(--slate); margin-top:6px; }
+
+  .shot-frame{
+    border-radius:14px; overflow:hidden; box-shadow:0 10px 24px rgba(0,0,0,0.10);
+    border:1px solid var(--line);
+    margin:36px 0;
+  }
+  .shot-frame img{ width:100%; display:block; cursor:zoom-in; transition:opacity 0.2s ease; }
+  .shot-frame img:hover{ opacity:0.92; }
+
+  .lightbox{
+    position:fixed; inset:0; z-index:100;
+    background:rgba(20,18,22,0.92);
+    display:none; align-items:center; justify-content:center;
+    padding:40px; cursor:zoom-out;
+  }
+  .lightbox.is-open{ display:flex; }
+  .lightbox img{
+    max-width:100%; max-height:100%; border-radius:8px; box-shadow:0 30px 80px rgba(0,0,0,0.5);
+    cursor:zoom-in; transition:transform 0.35s ease; transform-origin:center center;
+  }
+  .lightbox img.is-zoomed{ cursor:zoom-out; transform:scale(2.2); max-width:none; max-height:none; }
+  .lightbox-close{
+    position:fixed; top:24px; right:32px; z-index:101;
+    color:#fff; font-size:28px; line-height:1; background:none; border:none; cursor:pointer;
+    font-family:-apple-system, BlinkMacSystemFont, sans-serif;
+  }
+  .shot-caption{ font-size:13px; color:var(--slate); margin:12px 0 32px; text-align:center; }
+
+  .taxonomy-zoom{
+    width:100%; aspect-ratio:16/10;
+    background-image:url('./crm-activity-taxonomy.jpg');
+    background-repeat:no-repeat;
+    background-position:64% 54%;
+    background-size:150%;
+    background-color:#fff;
+    animation:taxonomyPan 70s cubic-bezier(0.45,0,0.55,1);
+  }
+  @keyframes taxonomyPan{
+    0%{ background-size:150%; background-position:64% 54%; }
+    14%{ background-size:150%; background-position:64% 54%; }
+    28%{ background-size:130%; background-position:34% 0%; }
+    40%{ background-size:130%; background-position:34% 0%; }
+    54%{ background-size:130%; background-position:34% 100%; }
+    66%{ background-size:130%; background-position:34% 100%; }
+    78%{ background-size:150%; background-position:69% 0%; }
+    88%{ background-size:150%; background-position:69% 100%; }
+    96%{ background-size:150%; background-position:69% 100%; }
+    100%{ background-size:150%; background-position:64% 54%; }
+  }
+
+  .mob-frame{ opacity:0; animation-duration:7s; animation-timing-function:ease-in-out; animation-iteration-count:infinite; }
+  @keyframes mobFade0{ 0%{opacity:1;} 33%{opacity:1;} 33.01%{opacity:0;} 100%{opacity:0;} }
+  @keyframes mobFade1{ 0%{opacity:0;} 33%{opacity:0;} 33.01%{opacity:1;} 66%{opacity:1;} 66.01%{opacity:0;} 100%{opacity:0;} }
+  @keyframes mobFade2{ 0%{opacity:0;} 66%{opacity:0;} 66.01%{opacity:1;} 100%{opacity:1;} }
+  .mob-frame.mf0{ opacity:1; animation-name:mobFade0; }
+  .mob-frame.mf1{ animation-name:mobFade1; }
+  .mob-frame.mf2{ animation-name:mobFade2; }
+
+  .mob-status-frame{ opacity:0; animation-duration:22s; animation-timing-function:ease-in-out; animation-iteration-count:infinite; }
+  @keyframes mobStatusFade0{ 0%{opacity:1;} 15.5%{opacity:1;} 16.2%{opacity:0;} 100%{opacity:0;} }
+  @keyframes mobStatusFade1{ 0%{opacity:0;} 15.8%{opacity:0;} 16.5%{opacity:1;} 32.2%{opacity:1;} 32.9%{opacity:0;} 100%{opacity:0;} }
+  @keyframes mobStatusFade2{ 0%{opacity:0;} 32.5%{opacity:0;} 33.2%{opacity:1;} 48.9%{opacity:1;} 49.6%{opacity:0;} 100%{opacity:0;} }
+  @keyframes mobStatusFade3{ 0%{opacity:0;} 49.2%{opacity:0;} 49.9%{opacity:1;} 65.6%{opacity:1;} 66.3%{opacity:0;} 100%{opacity:0;} }
+  @keyframes mobStatusFade4{ 0%{opacity:0;} 65.9%{opacity:0;} 66.6%{opacity:1;} 82.3%{opacity:1;} 83%{opacity:0;} 100%{opacity:0;} }
+  @keyframes mobStatusFade5{ 0%{opacity:0;} 82.6%{opacity:0;} 83.3%{opacity:1;} 100%{opacity:1;} }
+  .mob-status-frame.msf0{ opacity:1; animation-name:mobStatusFade0; }
+  .mob-status-frame.msf1{ animation-name:mobStatusFade1; }
+  .mob-status-frame.msf2{ animation-name:mobStatusFade2; }
+  .mob-status-frame.msf3{ animation-name:mobStatusFade3; }
+  .mob-status-frame.msf4{ animation-name:mobStatusFade4; }
+  .mob-status-frame.msf5{ animation-name:mobStatusFade5; }
+  .mob-dot{
+    position:absolute; top:41%;
+    width:20px; height:20px; border-radius:50%;
+    background:rgba(228,253,149,0.55);
+    border:1.5px solid rgba(196,214,90,0.9);
+    opacity:0; z-index:2;
+    transform:translate(-50%,-50%) scale(0.6);
+    animation-name:clickPulseMob; animation-duration:7s; animation-timing-function:ease-in-out; animation-iteration-count:infinite;
+  }
+  @keyframes clickPulseMob{
+    0%{ opacity:0; transform:translate(-50%,-50%) scale(0.6); }
+    2%{ opacity:1; transform:translate(-50%,-50%) scale(1.1); }
+    8%{ opacity:0; transform:translate(-50%,-50%) scale(1); }
+    100%{ opacity:0; }
+  }
+
+  .tab-dot{
+    position:absolute; top:43%;
+    width:26px; height:26px; border-radius:50%;
+    background:rgba(228,253,149,0.5);
+    border:1.5px solid rgba(196,214,90,0.85);
+    opacity:0; z-index:2; pointer-events:none;
+    transform:translate(-50%,-50%) scale(0.6);
+    animation-name:tabDotPulse; animation-duration:7s; animation-timing-function:ease-in-out; animation-iteration-count:infinite;
+  }
+  .tab-dot.td0{ left:13.3%; animation-delay:0s; }
+  .tab-dot.td1{ left:38.7%; animation-delay:3.5s; }
+  .tab-dot.td2{ left:62.7%; animation-delay:7s; }
+
+  .status-dot{
+    position:absolute;
+    width:26px; height:26px; border-radius:50%;
+    background:rgba(228,253,149,0.5);
+    border:1.5px solid rgba(196,214,90,0.85);
+    opacity:0; z-index:2; pointer-events:none;
+    transform:translate(-50%,-50%) scale(0.6);
+    animation-name:tabDotPulse; animation-duration:22s; animation-timing-function:ease-in-out; animation-iteration-count:infinite;
+  }
+  @keyframes tabDotPulse{
+    0%{ opacity:0; transform:translate(-50%,-50%) scale(0.6); }
+    3%{ opacity:1; transform:translate(-50%,-50%) scale(1.15); }
+    9%{ opacity:0; transform:translate(-50%,-50%) scale(1); }
+    100%{ opacity:0; }
+  }
+
+  .phone-frame{ position:relative; padding:18px 8px; border-radius:28px; background:#1a1a1a; box-shadow:0 24px 60px rgba(0,0,0,0.3); width:260px; margin:0 auto; }
+  .phone-frame .notch{ position:absolute; top:7px; left:50%; transform:translateX(-50%); width:44px; height:12px; background:#1a1a1a; border-radius:8px; z-index:3; }
+  .phone-frame .screen{ width:100%; aspect-ratio:9/19; border-radius:18px; overflow:hidden; position:relative; }
+  .phone-frame .homebar{ position:absolute; bottom:6px; left:50%; transform:translateX(-50%); width:60px; height:4px; background:rgba(120,120,120,0.6); border-radius:4px; z-index:3; }
+
+  .metric-banner{
+    background:var(--plum); color:#fff; border-radius:16px;
+    padding:44px 40px; display:flex; align-items:center; gap:40px; flex-wrap:wrap;
+  }
+  .metric-banner .metric-num{ font-family:'Newsreader', serif; font-size:clamp(40px,6vw,64px); font-weight:500; line-height:1; }
+  .metric-banner .metric-txt{ font-size:16px; max-width:32ch; opacity:0.9; }
+
+  footer{
+    padding:56px 0 60px; border-top:1px solid var(--line); margin-top:40px;
+  }
+  .footer-row{ display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:20px; }
+  .footer-row a{ text-decoration:none; color:var(--paper-dim); font-size:14px; transition:color 0.2s ease; }
+  .footer-row a:hover{ color:var(--plum); }
+</style>
+</head>
+<body>
+
+<header>
+  <nav>
+    <a href="./index.html" class="nav-name">Amanda Cathey</a>
+    <div class="nav-links">
+      <a href="./index.html#hero">Home</a>
+      <a href="./index.html#about">About</a>
+      <a href="./index.html#contact">Connect</a>
+    </div>
+  </nav>
+</header>
+
+<main>
+  <div class="wrap">
+    <a href="./index.html#work" class="backlink">&larr; Back to selected projects</a>
+
+    <div class="hero">
+      <p class="eyebrow">CRM Platform &middot; Compass</p>
+      <h1><span class="hw" style="animation-delay:0s;">Designing</span> <span class="hw" style="animation-delay:0.045s;">a</span> <span class="hw" style="animation-delay:0.09s;">unified</span> <span class="hw" style="animation-delay:0.135s;">CRM</span> <span class="hw" style="animation-delay:0.18s;">that</span> <span class="hw" style="animation-delay:0.225s;">lifted</span> <span class="hw" style="animation-delay:0.27s;">usage&nbsp;20%</span></h1>
+      <p class="lede">Three separate initiatives, shipped independently over about two years, each aimed at the same underlying problem: agents had no reliable way to see where a relationship stood or what to do next. A relationship status framework, a redesigned filtering system, and a rebuilt contact detail page went out one at a time, each building on what the last one revealed, and together lifted CRM usage 20% year-over-year.</p>
+    </div>
+
+    <div class="three-col">
+      <div class="stat-card">
+        <div class="stat-move">+20%</div>
+        <div class="stat-label">YoY CRM usage</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-move">3</div>
+        <div class="stat-label">Shipped features</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-move">Web &amp; Mobile</div>
+        <div class="stat-label">Cross-platform design</div>
+      </div>
+    </div>
+
+    <div class="shot-frame" style="max-width:760px; margin:40px auto 0;">
+      <img src="./crm-contact-detail.jpg" alt="Compass CRM unified contact detail page showing agent activity feed and key background information">
+    </div>
+    <p class="shot-caption">The rebuilt contact detail page, one of three interventions that shipped over two&nbsp;years.</p>
+
+    <section>
+      <h2 class="section-title">The problem</h2>
+      <div class="section-body">
+        <p>Compass provides an integrated platform supporting real estate agents in managing clients, transactions, and business growth. The CRM sits at the center of agents' daily workflows. The problem is that contact information, follow-ups, and deal stages were fragmented across tools, leading to missed follow-ups, manual tracking, and lost revenue.</p>
+      </div>
+    </section>
+
+    <section>
+      <h2 class="section-title">Discovery: understanding workflow breakdowns</h2>
+      <div class="section-body">
+        <p>To understand adoption friction and workflow breakdowns, I synthesized insights across usability testing, agent interviews (40 total across the three initiatives), support feedback, and heuristic audits. I used Dovetail's AI-assisted synthesis to tag and cluster findings, which helped surface patterns faster and reduce bias in theme identification.</p>
+      </div>
+      <div class="shot-frame" style="max-width:640px; margin-left:auto; margin-right:auto;">
+        <img src="./crm-miro.jpg" alt="Usability synthesis board in Miro, interview notes bucketed by experience and components">
+      </div>
+      <p class="shot-caption">Usability synthesis using Miro, interview notes bucketed by experience and components, surfacing emerging themes across agent workflows.</p>
+      <div class="section-body">
+        <p>Usability testing revealed inconsistent navigation between contact management and pipeline stages, leading to dropped follow-ups and duplicated effort. Agent interviews consistently surfaced reliance on personal memory and outside tools, Follow Up Boss came up by name more than once, signaling low trust in CRM visibility.</p>
+        <p><strong>Key insight:</strong> agents needed clearer visibility into relationship status and next actions without disrupting existing habits. That reframed the goal from feature parity to closing the gap with the tools agents already trusted, then going beyond&nbsp;them.</p>
+      </div>
+      <div class="three-col">
+        <div class="col-card">
+          <span class="col-label">Finding 1</span>
+          <h3>Agents are frustrated by the fragmented contact detail page</h3>
+          <p>Many were confused and felt the information was redundant and&nbsp;confusing.</p>
+        </div>
+        <div class="col-card">
+          <span class="col-label">Finding 2</span>
+          <h3>Agents want a way to track contacts at a glance</h3>
+          <p>Make progress and next actions&nbsp;obvious.</p>
+        </div>
+        <div class="col-card">
+          <span class="col-label">Finding 3</span>
+          <h3>Saved filters aren't being utilized</h3>
+          <p>Many users didn't know they existed at&nbsp;all.</p>
+        </div>
+      </div>
+    </section>
+
+    <section>
+      <h2 class="section-title">Solution: three interconnected interventions</h2>
+      <div class="section-body">
+        <p>These findings pointed to one underlying problem with three different edges to it: a relationship status framework, a redesigned filtering system, and a rebuilt contact detail page, each one informed by what agents did with the last.</p>
+      </div>
+
+      <p class="section-eyebrow" style="margin-top:8px;">Intervention 1</p>
+      <h3 style="font-family:'Newsreader', serif; font-weight:500; font-size:22px; margin:0 0 14px;">Structured relationship statuses</h3>
+      <div class="section-body">
+        <p>Contact statuses didn't exist in the Compass CRM before this work. I defined the framework from scratch, giving agents a clear way to see relationship progress and next actions at a glance, which helped reduce dropped follow-ups and brought structure to what had been entirely memory-dependent workflows.</p>
+      </div>
+      <div class="shot-frame" style="max-width:640px; margin-left:auto; margin-right:auto;">
+        <img src="./crm-status-admin.jpg" alt="Compass CRM contact status admin screen, listing statuses like Undefined, New, Hot leads, Engaged, Nurture, Active, In contract, and Closed with outreach intervals">
+      </div>
+      <p class="shot-caption">The full set of statuses agents move contacts through, each with its own outreach interval.</p>
+      <p class="section-eyebrow" style="margin-top:32px;">Designing contact status for agents on the go</p>
+      <div class="section-body">
+        <p>On iOS, status use cases look a bit different because they're centered on agents who work on the move. Since there isn't an option to create a status, the focus shifts to the actions they need most, like quickly updating a contact's status in the moment.</p>
+      </div>
+      <div class="phone-frame">
+        <div class="notch"></div>
+        <div class="screen">
+          <img src="./crm-status-mobile-1.jpg" alt="Compass mobile contact page showing current status, Active" class="mob-status-frame msf0" style="position:absolute; top:0; left:0; width:100%; height:100%; object-fit:cover; object-position:top;">
+          <img src="./crm-status-mobile-2.jpg" alt="Edit contact screen with Contact status field showing Active" class="mob-status-frame msf1" style="position:absolute; top:0; left:0; width:100%; height:100%; object-fit:cover; object-position:top;">
+          <img src="./crm-status-mobile-3.jpg" alt="Select Contact status list with Active chosen" class="mob-status-frame msf2" style="position:absolute; top:0; left:0; width:100%; height:100%; object-fit:cover; object-position:top;">
+          <img src="./crm-status-mobile-4.jpg" alt="Select Contact status list with Nurture chosen" class="mob-status-frame msf3" style="position:absolute; top:0; left:0; width:100%; height:100%; object-fit:cover; object-position:top;">
+          <img src="./crm-status-mobile-5.jpg" alt="Edit contact screen with status updated to Nurture" class="mob-status-frame msf4" style="position:absolute; top:0; left:0; width:100%; height:100%; object-fit:cover; object-position:top;">
+          <img src="./crm-status-mobile-6.jpg" alt="Contact page showing the updated Nurture status" class="mob-status-frame msf5" style="position:absolute; top:0; left:0; width:100%; height:100%; object-fit:cover; object-position:top;">
+          <div class="status-dot" style="left:92%; top:9.85%; animation-delay:0s;"></div>
+          <div class="status-dot" style="left:92%; top:58.1%; animation-delay:3.63s;"></div>
+          <div class="status-dot" style="left:47.7%; top:40%; animation-delay:7.3s;"></div>
+          <div class="status-dot" style="left:92%; top:11.1%; animation-delay:14.65s;"></div>
+        </div>
+        <div class="homebar"></div>
+      </div>
+      <p class="shot-caption">Updating a status in the moment: open the contact, jump to status, pick the new one, save, done.</p>
+
+      <p class="section-eyebrow" style="margin-top:48px;">Intervention 2</p>
+      <h3 style="font-family:'Newsreader', serif; font-weight:500; font-size:22px; margin:0 0 14px;">Enhanced saved filtering</h3>
+      <div class="section-body">
+        <p>Redesigned filtering surfaced actionable contact groups aligned with daily workflows, helping agents quickly prioritize outreach.</p>
+      </div>
+      <div class="two-col">
+        <div>
+          <p class="col-label" style="margin:0 0 10px;">Before</p>
+          <div class="shot-frame" style="margin:0;">
+            <img src="./crm-filters-before.jpg" alt="Before: filters buried in the interface with no way to combine conditions">
+          </div>
+        </div>
+        <div>
+          <p class="col-label" style="margin:0 0 10px;">After</p>
+          <div class="shot-frame" style="margin:0;">
+            <img src="./crm-filters.jpg" alt="After: persistent saved filter pills with a boolean condition builder">
+          </div>
+        </div>
+      </div>
+      <p class="shot-caption">From buried and uncombinable to persistent, boolean, and built into the&nbsp;header.</p>
+
+      <p class="section-eyebrow" style="margin-top:48px;">Intervention 3</p>
+      <h3 style="font-family:'Newsreader', serif; font-weight:500; font-size:22px; margin:0 0 14px;">Reframing the contact detail page</h3>
+      <div class="section-body">
+        <p>The original ask was to add an activity feed to the contact detail page. After auditing the existing experience and mapping agent workflows, I pushed back. The feed alone wouldn't solve the visibility problem, the entire contact detail page needed a rethink. I proposed a full revamp, which became the foundation the other two interventions could build on.</p>
+      </div>
+      <div class="two-col">
+        <div class="col-card">
+          <p class="col-label">Before</p>
+          <p>Fragmented contact detail page. Information scattered, no clear next action, agents relying on memory and external tools.</p>
+        </div>
+        <div class="col-card">
+          <p class="col-label">After</p>
+          <p>Unified workflow hub: history, activity, and next steps consolidated into a single source of truth.</p>
+        </div>
+      </div>
+      <div class="two-col" style="margin-top:36px;">
+        <div class="shot-frame" style="margin:0;">
+          <img src="./crm-before.jpg" alt="Before: fragmented Compass contact page, information split across separate tabs">
+        </div>
+        <div class="shot-frame" style="margin:0;">
+          <img src="./crm-after.jpg" alt="After: unified Compass contact detail page">
+        </div>
+      </div>
+      <p class="shot-caption">The rebuilt contact detail page, the foundation the other two interventions build&nbsp;on.</p>
+
+      <p class="section-eyebrow" style="margin-top:32px;">Activity feed: types and interactions</p>
+      <div class="section-body">
+        <p>Defining the full taxonomy of activity types and their in-context behavior before building, ensuring every interaction state was accounted for and consistent across the feed. Agents were logging calls, texts, meetings, notes, contact changes, collection activity, listing views, and more, each with its own behavior and context.</p>
+      </div>
+      <div class="shot-frame">
+        <img src="./crm-activity-taxonomy-zoom.jpg" alt="Activity feed types and interactions taxonomy: phone log, text log, meeting in person, notes, and contact level changes">
+      </div>
+      <p class="shot-caption" style="margin-top:-6px;">The activity type legend paired with real examples in context. <a href="#" onclick="openTaxonomyFull(); return false;" style="color:var(--plum);">View full size</a></p>
+
+      <p class="section-eyebrow" style="margin-top:32px;">Designing activity iOS for agents on the move</p>
+      <div class="section-body">
+        <p>Mobile had to work differently. Most agents needed access while they were out in the field, not at a desk. I focused on getting them into their work fast, with a simple path to the activity feed that jumps straight into a contact's timeline. From there, they can take notes, call, or text immediately, with as little friction as possible.</p>
+      </div>
+      <div class="phone-frame">
+        <div class="notch"></div>
+        <div class="screen">
+          <img src="./crm-mobile-activity.jpg" alt="Compass mobile contact page, Activity tab" class="mob-frame mf0" style="position:absolute; top:0; left:0; width:100%; height:100%; object-fit:cover; object-position:top;">
+          <img src="./crm-mobile-tools.jpg" alt="Compass mobile contact page, Tools tab" class="mob-frame mf1" style="position:absolute; top:0; left:0; width:100%; height:100%; object-fit:cover; object-position:top;">
+          <img src="./crm-mobile-info.jpg" alt="Compass mobile contact page, Info tab" class="mob-frame mf2" style="position:absolute; top:0; left:0; width:100%; height:100%; object-fit:cover; object-position:top;">
+          <div class="tab-dot td0"></div>
+          <div class="tab-dot td1"></div>
+          <div class="tab-dot td2"></div>
+        </div>
+        <div class="homebar"></div>
+      </div>
+      <p class="shot-caption">Activity, Tools, and Info: the same structure as desktop, sized for a between-showings check-in.</p>
+    </section>
+
+    <section>
+      <h2 class="section-title">Outcomes: stronger engagement, measurable adoption</h2>
+      <div class="section-body">
+        <p>The redesigned CRM workflows drove a 20% year-over-year increase in CRM usage by May 2025. Stakeholder response was strong across all three interventions, with agents citing improved workflow visibility, faster prioritization, and greater continuity across client relationships.</p>
+      </div>
+      <div class="metric-banner">
+        <div class="metric-num">+20%</div>
+        <div class="metric-txt">Year-over-year increase in CRM usage across the three initiatives, measured by May 2025, agents opened and worked contacts in the tool instead of routing around&nbsp;it.</div>
+      </div>
+    </section>
+
+    <section>
+      <h2 class="section-title">Re-engaging with Carlos Craig: a flow</h2>
+      <div class="section-body">
+        <p>A real flow through the redesigned experience, re-engaging with a contact named Carlos Craig after some time away, picking back up his status, activity, and next steps from exactly where they left off.</p>
+      </div>
+      <div class="shot-frame" style="padding:0;">
+        <iframe style="border:none; width:100%; height:640px; display:block;" src="https://www.figma.com/embed?embed_host=share&hotspot-hints=0&url=https%3A%2F%2Fwww.figma.com%2Fproto%2FlQ5PlkYYCWdBu7IEBePzxB%2FPortfolio%3Fnode-id%3D152-17087%26p%3Df%26t%3DwoZXYlSV3mWhEDc6-0%26scaling%3Dscale-down%26content-scaling%3Dfixed%26page-id%3D98%253A3507%26starting-point-node-id%3D152%253A17087%26hotspot-hints%3D0" allowfullscreen></iframe>
+      </div>
+      <p class="shot-caption">Interactive, click through the prototype above.</p>
+    </section>
+
+    <section>
+      <h2 class="section-title">What I'd take from this</h2>
+      <div class="section-body">
+        <p>Looking back, I would have prioritized tighter integration of the activity feed into the homepage experience to better connect the product's key moments. I'd also advocate for a more phased rollout with stronger training support. The volume of change was significant, and users would have benefited from more time to build familiarity before the next layer arrived.</p>
+      </div>
+    </section>
+
+    <div class="meta-row" style="margin-top:16px;">
+      <div class="meta-item">
+        <p class="meta-label">Role</p>
+        <p class="meta-value">Product design lead</p>
+      </div>
+      <div class="meta-item">
+        <p class="meta-label">Industry</p>
+        <p class="meta-value">Real estate tech</p>
+      </div>
+      <div class="meta-item">
+        <p class="meta-label">Timeline</p>
+        <p class="meta-value">2 years</p>
+      </div>
+    </div>
+  </div>
+</main>
+
+<footer>
+  <div class="wrap footer-row">
+    <a href="./index.html#work">&larr; Back to selected projects</a>
+    <a href="./index.html#contact">Get in touch &rarr;</a>
+  </div>
+</footer>
+
+<div class="lightbox" id="lightbox">
+  <button class="lightbox-close" aria-label="Close">&times;</button>
+  <img id="lightbox-img" src="" alt="">
+</div>
+
+<script>
+  (function(){
+    var lightbox = document.getElementById('lightbox');
+    var lightboxImg = document.getElementById('lightbox-img');
+    document.querySelectorAll('.shot-frame img').forEach(function(img){
+      img.addEventListener('click', function(){
+        lightboxImg.src = img.src;
+        lightboxImg.alt = img.alt;
+        lightboxImg.classList.remove('is-zoomed');
+        lightbox.classList.add('is-open');
+      });
+    });
+    function closeLightbox(){ lightbox.classList.remove('is-open'); lightboxImg.src=''; lightboxImg.classList.remove('is-zoomed'); }
+    lightbox.addEventListener('click', closeLightbox);
+    lightboxImg.addEventListener('mousemove', function(e){
+      if(!lightboxImg.classList.contains('is-zoomed')) return;
+      var rect = lightboxImg.getBoundingClientRect();
+      var xPct = ((e.clientX - rect.left) / rect.width) * 100;
+      var yPct = ((e.clientY - rect.top) / rect.height) * 100;
+      lightboxImg.style.transformOrigin = xPct + '% ' + yPct + '%';
+    });
+    lightboxImg.addEventListener('click', function(e){
+      e.stopPropagation();
+      if(lightboxImg.classList.contains('is-zoomed')){
+        lightboxImg.classList.remove('is-zoomed');
+        lightboxImg.style.transition = 'transform 0.35s ease';
+      } else {
+        var rect = lightboxImg.getBoundingClientRect();
+        var xPct = ((e.clientX - rect.left) / rect.width) * 100;
+        var yPct = ((e.clientY - rect.top) / rect.height) * 100;
+        lightboxImg.style.transition = 'transform 0.35s ease';
+        lightboxImg.style.transformOrigin = xPct + '% ' + yPct + '%';
+        lightboxImg.classList.add('is-zoomed');
+        setTimeout(function(){ lightboxImg.style.transition = 'none'; }, 350);
+      }
+    });
+    document.addEventListener('keydown', function(e){ if(e.key === 'Escape') closeLightbox(); });
+    window.openTaxonomyFull = function(){
+      lightboxImg.src = './crm-activity-taxonomy.jpg';
+      lightboxImg.alt = 'Activity feed types and interactions taxonomy';
+      lightboxImg.classList.remove('is-zoomed');
+      lightbox.classList.add('is-open');
+    };
+  })();
+</script>
+
+</body>
+</html>

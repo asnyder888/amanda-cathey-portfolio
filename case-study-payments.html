@@ -1,0 +1,503 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Designing payment flows projected to save $1M — Amanda Cathey</title>
+<meta name="description" content="Case study: the ACH and surcharge initiative at Compass, a staged payment rollout projected to save $878K–$1.03M annually while giving agents a genuine, transparent choice.">
+<link rel="canonical" href="https://amandacathey.com/case-study-payments.html">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Designing payment flows projected to save $1M — Amanda Cathey">
+<meta property="og:description" content="Case study: the ACH and surcharge initiative at Compass, a staged payment rollout projected to save $878K–$1.03M annually while giving agents a genuine, transparent choice.">
+<meta property="og:url" content="https://amandacathey.com/case-study-payments.html">
+<meta property="og:image" content="https://amandacathey.com/case-study-payments-og.jpg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Designing payment flows projected to save $1M — Amanda Cathey">
+<meta name="twitter:description" content="Case study: the ACH and surcharge initiative at Compass, a staged payment rollout projected to save $878K–$1.03M annually while giving agents a genuine, transparent choice.">
+<meta name="twitter:image" content="https://amandacathey.com/case-study-payments-og.jpg">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' fill='%23000000'/%3E%3Ccircle cx='16' cy='16' r='9' fill='%23ffffff'/%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;0,6..72,600;0,6..72,700;1,6..72,400;1,6..72,500;1,6..72,600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --ink:#1c1a22;
+    --paper:#ffffff;
+    --card-tan:#f1ece2;
+    --paper-dim:#57555f;
+    --plum:#652174;
+    --brass:#9c6f28;
+    --slate:#6f6d78;
+    --line: rgba(23,22,29,0.11);
+    --maxw: 1120px;
+  }
+  *{box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{
+    margin:0;
+    background:var(--paper);
+    color:var(--ink);
+    font-family:-apple-system, BlinkMacSystemFont, sans-serif;
+    font-size:16px;
+    line-height:1.6;
+    -webkit-font-smoothing:antialiased;
+  }
+  @media (prefers-reduced-motion: reduce){
+    *{animation-duration:0.01ms !important; transition-duration:0.01ms !important;}
+  }
+  ::selection{background:var(--plum); color:#ffffff;}
+  a{color:inherit;}
+  a:focus-visible, button:focus-visible{ outline:2px solid var(--plum); outline-offset:3px; border-radius:2px; }
+  .wrap{max-width:var(--maxw); margin:0 auto; padding:0 32px;}
+
+  header{
+    position:sticky; top:0; z-index:10;
+    background:rgba(255,255,255,0.86);
+    backdrop-filter:blur(10px);
+    border-bottom:1px solid var(--line);
+  }
+  nav{
+    display:flex; align-items:center; justify-content:space-between;
+    padding:20px 32px;
+    max-width:var(--maxw); margin:0 auto;
+  }
+  .nav-name{
+    font-family:'Newsreader', serif; font-size:21px; font-weight:600; letter-spacing:-0.005em;
+    color:var(--ink); text-decoration:none; transition:color 0.25s ease;
+  }
+  .nav-name:hover{ color:var(--plum); }
+  .nav-links{ display:flex; gap:28px; }
+  .nav-links a{
+    font-size:13px; text-decoration:none; color:var(--paper-dim); letter-spacing:0.02em;
+    padding:8px 2px; position:relative; transition:color 0.2s ease;
+  }
+  .nav-links a::after{
+    content:''; position:absolute; left:2px; right:2px; bottom:2px; height:1px;
+    background:#ff1f8f; transform:scaleX(0); transform-origin:left; transition:transform 0.25s ease;
+  }
+  .nav-links a:hover::after{ transform:scaleX(1); }
+  .nav-links a:hover{ color:var(--ink); }
+
+  .backlink{
+    display:inline-flex; align-items:center; gap:8px;
+    font-size:13px; color:var(--paper-dim); text-decoration:none;
+    margin:40px 0 24px;
+    transition:color 0.2s ease;
+  }
+  .backlink:hover{ color:var(--plum); }
+
+  .hero{ padding:0 0 48px; }
+  .eyebrow{
+    font-family:-apple-system, BlinkMacSystemFont, sans-serif;
+    font-size:11px; letter-spacing:0.14em; text-transform:uppercase; color:var(--slate);
+  }
+  h1{
+    font-family:'Newsreader', serif; font-weight:500;
+    font-size:clamp(30px,4.6vw,50px); line-height:1.15; letter-spacing:-0.01em;
+    margin:14px 0 20px; max-width:22ch; color:var(--plum);
+  }
+  .hw{
+    display:inline-block;
+    opacity:0;
+    transform:translateY(14px);
+    animation:hwRipple 0.65s ease-out forwards;
+  }
+  @keyframes hwRipple{
+    to{ opacity:1; transform:translateY(0); }
+  }
+  .lede{ font-size:16px; color:var(--paper-dim); max-width:62ch; margin:0; }
+
+  .meta-row{
+    display:flex; flex-wrap:wrap; gap:40px;
+    padding:28px 0; margin:36px 0 0; border-top:1px solid var(--line); border-bottom:1px solid var(--line);
+  }
+  .meta-item .meta-label{ font-size:11px; letter-spacing:0.08em; text-transform:uppercase; color:var(--slate); margin:0 0 6px; }
+  .meta-item .meta-value{ font-size:15px; color:var(--ink); }
+
+  section{ padding:56px 0; }
+  .section-title{
+    font-family:'Newsreader', serif; font-weight:500; font-size:clamp(22px,2.8vw,30px);
+    margin:0 0 18px; color:var(--ink);
+  }
+  .section-eyebrow{
+    font-family:-apple-system, BlinkMacSystemFont, sans-serif;
+    font-size:11px; letter-spacing:0.1em; text-transform:uppercase; color:var(--brass); margin:0 0 8px;
+  }
+  .section-body p{ color:var(--paper-dim); font-size:16px; max-width:70ch; margin:0 0 16px; }
+  .section-body strong{ color:var(--ink); font-weight:500; }
+
+  .three-col{ display:grid; grid-template-columns:1fr 1fr 1fr; gap:28px; }
+  .two-col{ display:grid; grid-template-columns:1fr 1fr; gap:28px; }
+  @media (max-width:760px){ .three-col, .two-col{ grid-template-columns:1fr; gap:20px; } }
+  .stat-card{ text-align:center; padding:8px; }
+  .stat-card .stat-move{ font-family:'Newsreader', serif; font-size:clamp(22px,3vw,30px); color:var(--plum); font-weight:500; }
+  .stat-card .stat-label{ font-size:13px; color:var(--slate); margin-top:6px; }
+
+  .col-card{ background:var(--card-tan); border-radius:16px; padding:24px 24px 26px; }
+  .col-card .col-label{ font-size:11px; letter-spacing:0.08em; text-transform:uppercase; color:var(--brass); margin:0 0 10px; display:block; }
+  .col-card p{ color:var(--paper-dim); font-size:14.5px; margin:0; }
+
+  .shot-frame{
+    border-radius:14px; overflow:hidden; box-shadow:0 10px 24px rgba(0,0,0,0.10);
+    border:1px solid var(--line);
+    margin:0;
+  }
+  .shot-frame img{ width:100%; display:block; cursor:zoom-in; transition:opacity 0.2s ease; }
+  .shot-frame img:hover{ opacity:0.92; }
+  .shot-frame img.flat-shot{ cursor:default; }
+  .shot-frame img.flat-shot:hover{ opacity:1; }
+
+  .lightbox{
+    position:fixed; inset:0; z-index:100;
+    background:rgba(20,18,22,0.92);
+    display:none; align-items:center; justify-content:center;
+    padding:40px; cursor:zoom-out;
+  }
+  .lightbox.is-open{ display:flex; }
+  .lightbox img{
+    max-width:100%; max-height:100%; border-radius:8px; box-shadow:0 30px 80px rgba(0,0,0,0.5);
+    cursor:zoom-in; transition:transform 0.35s ease; transform-origin:center center;
+  }
+  .lightbox img.expand-flat{ border-radius:0; box-shadow:none; background:transparent; }
+  .lightbox img.is-zoomed{ cursor:zoom-out; transform:scale(2.2); max-width:none; max-height:none; }
+  .lightbox-close{
+    position:fixed; top:24px; right:32px; z-index:101;
+    color:#fff; font-size:28px; line-height:1; background:none; border:none; cursor:pointer;
+    font-family:-apple-system, BlinkMacSystemFont, sans-serif;
+  }
+  .shot-caption{ font-size:13px; color:var(--slate); margin:12px 0 32px; text-align:center; }
+
+  .metric-banner{
+    background:var(--plum); color:#fff; border-radius:16px;
+    padding:44px 40px; display:flex; align-items:flex-start; justify-content:space-between; gap:40px; flex-wrap:wrap;
+  }
+  .metric-banner > div{ flex:1 1 220px; }
+  .metric-banner .metric-num{ font-family:'Newsreader', serif; font-size:clamp(28px,4.4vw,42px); font-weight:500; line-height:1.05; }
+  .metric-banner .metric-txt{ font-size:15px; max-width:32ch; opacity:0.9; }
+
+  .pull-quote{
+    border-left:3px solid var(--plum); padding:6px 0 6px 28px; margin:36px 0;
+  }
+  .pull-quote p{
+    font-family:'Newsreader', serif; font-style:italic; font-weight:400;
+    font-size:clamp(18px,2vw,21px); color:var(--ink); margin:0 0 12px; max-width:56ch;
+  }
+  .pull-quote .attr{ font-size:13px; color:var(--slate); }
+
+  footer{
+    padding:56px 0 60px; border-top:1px solid var(--line); margin-top:40px;
+  }
+  .footer-row{ display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:20px; }
+  .footer-row a{ text-decoration:none; color:var(--paper-dim); font-size:14px; transition:color 0.2s ease; }
+  .footer-row a:hover{ color:var(--plum); }
+</style>
+</head>
+<body>
+
+<header>
+  <nav>
+    <a href="./index.html" class="nav-name">Amanda Cathey</a>
+    <div class="nav-links">
+      <a href="./index.html#hero">Home</a>
+      <a href="./index.html#about">About</a>
+      <a href="./index.html#contact">Connect</a>
+    </div>
+  </nav>
+</header>
+
+<main>
+  <div class="wrap">
+    <a href="./index.html#work" class="backlink">&larr; Back to selected projects</a>
+
+    <div class="hero">
+      <p class="eyebrow">Payments &middot; Compass</p>
+      <h1><span class="hw" style="animation-delay:0s;">Designing</span> <span class="hw" style="animation-delay:0.045s;">payment</span> <span class="hw" style="animation-delay:0.09s;">flows</span> <span class="hw" style="animation-delay:0.135s;">projected</span> <span class="hw" style="animation-delay:0.18s;">to</span> <span class="hw" style="animation-delay:0.225s;">save&nbsp;$1M</span></h1>
+      <p class="lede">An agent-only ACH and surcharge initiative that gave agents a genuine, transparent choice before shifting credit card processing costs off the company, aligned across product, engineering, and compliance in eight weeks.</p>
+    </div>
+
+    <div class="three-col">
+      <div class="stat-card">
+        <div class="stat-move">$1M+</div>
+        <div class="stat-label">Projected annual savings</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-move">2</div>
+        <div class="stat-label">New payment flows: ACH &amp; card&nbsp;surcharge</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-move">0 to 1</div>
+        <div class="stat-label">ACH flows built from scratch</div>
+      </div>
+    </div>
+
+    <div class="shot-frame" style="max-width:640px; margin:40px auto 0;">
+      <img src="./ach-payment-flow.jpg" alt="Compass Add payment method modal showing the choice between credit or debit card and US bank account">
+    </div>
+    <p class="shot-caption">The final flow: a flat $1 ACH alternative alongside the 2.99% card surcharge.</p>
+
+    <section>
+      <h2 class="section-title">The problem</h2>
+      <div class="section-body">
+        <p>Compass had no mechanism for passing credit card processing fees to agents and no alternative payment method. Every credit card transaction came at a direct cost to the company, quietly adding up across thousands of invoices. No ACH option. No surcharge disclosure. No way for agents to make a lower-cost choice, because that choice didn't exist yet.</p>
+      </div>
+      <div class="three-col">
+        <div class="col-card">
+          <span class="col-label">$1.1M a year in fees</span>
+          <p>Credit card processing costs Compass roughly $1.1M annually, a direct cost with no offset and no alternative payment path.</p>
+        </div>
+        <div class="col-card">
+          <span class="col-label">A wallet with one option</span>
+          <p>Credit and debit cards were the only payment method for invoices and commission deductions, which also capped what the platform could support next: calling and texting, Compass coaching, digital advertising, and other features that would need payment flexibility.</p>
+        </div>
+        <div class="col-card">
+          <span class="col-label">Cards that quietly expire</span>
+          <p>Recurring payments depended on cards staying valid over the long term, with no reliable way to keep an agent's payment method current before it lapsed.</p>
+        </div>
+      </div>
+      <div class="two-col" style="margin-top:28px;">
+        <div>
+          <div class="shot-frame">
+            <img src="./ach-wallet-page.jpg" alt="Compass Payments settings page showing an agent's wallet with only credit and debit cards on file, no ACH option">
+          </div>
+          <p class="shot-caption">Before: cards only, no bank account&nbsp;option.</p>
+        </div>
+        <div>
+          <div class="shot-frame">
+            <img src="./ach-wallet-page-after.jpg" alt="Compass Payments settings page showing an agent's wallet with a Bank of America ACH account successfully added alongside their existing card">
+          </div>
+          <p class="shot-caption">After: a bank account added right alongside the&nbsp;card.</p>
+        </div>
+      </div>
+    </section>
+
+    <section>
+      <h2 class="section-title">Discovery: the fee wasn't the problem</h2>
+      <div class="section-body">
+        <p>Before designing the flow, I ran concept testing with 10 agents using early modal prototypes, not to validate the UI, but to pressure-test the message. The goal was to understand how agents would react to a new fee and an unfamiliar payment method before either went live.</p>
+        <p>I also ran agents through the actual Stripe bank-linking experience directly, to make sure the flow itself felt familiar rather than like an unfamiliar third party asking for their bank details.</p>
+      </div>
+      <div class="pull-quote">
+        <p>&ldquo;Agents didn't object to the fee as much as they objected to feeling like it was being hidden from them.&rdquo;</p>
+        <p class="attr">Transparency and timing mattered more than the dollar amount.</p>
+      </div>
+      <div class="shot-frame">
+        <img src="./ach-usability-testing.jpg" alt="Remote usability testing session, agent screen-sharing the Compass payment terms modal while walking through the update in real time">
+      </div>
+      <p class="shot-caption">A live session, watching an agent react to the updated payment terms modal in real&nbsp;time.</p>
+    </section>
+
+    <section>
+      <h2 class="section-title">Strategy: lead with the choice, not the charge</h2>
+      <div class="section-body">
+        <p>That insight shaped a three-phase rollout rather than a single launch. Phase 1 simply let agents know a new payment method was coming, in a modal they were free to dismiss. Phase 2 kept that same no-pressure dismissible modal but made ACH real: agents could add a bank account whenever they were ready, well before any cost was involved. Phase 3 introduced the credit card surcharge itself, at which point every saved card carried a clear processing-fee disclosure right where agents chose how to pay, so the cost was never a surprise at the moment it mattered. Agents weren't blindsided at any step; they had a genuine, lower-cost alternative already in place by the time the fee arrived. I aligned product, engineering, and compliance around this sequencing inside an eight-week window, designing within legal disclosure requirements rather than around them.</p>
+      </div>
+      <div class="shot-frame">
+        <img src="./ach-modal-sequence.jpg" alt="Two payment terms modals side by side, the first announcing ACH is coming, the second confirming ACH is live before the surcharge activates">
+      </div>
+      <p class="shot-caption">Phases 1 and 2 in practice: agents heard about ACH before it launched, then saw it live, still ahead of the&nbsp;surcharge.</p>
+      <div class="shot-frame" style="max-width:640px; margin-left:auto; margin-right:auto;">
+        <img src="./ach-p3-processing-fees.jpg" alt="Add or select a payment method screen showing saved cards, each with its own processing-fee disclosure, and an option to add a new payment method">
+      </div>
+      <p class="shot-caption">Phase 3: processing fees disclosed directly on each saved card, no surprise when it came time to&nbsp;pay.</p>
+      <div class="section-body">
+        <p>The same disclosure carried through to the invoice itself. Paying with a card broke the processing fee out as its own line item next to the subtotal, so the total an agent saw was never a surprise, whether they were adding a card or actually paying an&nbsp;invoice.</p>
+      </div>
+      <div class="shot-frame" style="max-width:640px; margin-left:auto; margin-right:auto;">
+        <img src="./ach-invoice-surcharge.jpg" alt="Full Pay Invoice screen showing a 2.99 percent processing fee broken out as its own line item above the total, with a Visa card selected as the payment method">
+      </div>
+      <p class="shot-caption">The processing fee, itemized on the invoice&nbsp;itself.</p>
+      <div class="section-body">
+        <p>None of the three phases worked as a single, one-size-fits-all flow. Every account status the platform already supported had to keep working inside the new sequencing.</p>
+      </div>
+      <div class="three-col">
+        <div class="col-card">
+          <span class="col-label">Agents on a payment plan</span>
+          <p>Agents already paying down a balance on an existing plan needed the new fee structure to layer on top of it cleanly, without disrupting the plan or generating a conflicting&nbsp;charge.</p>
+        </div>
+        <div class="col-card">
+          <span class="col-label">Agents on autopay</span>
+          <p>Autopay had to keep honoring its own promise: the surcharge applied automatically without forcing a manual re-confirmation that would break the "set it and forget it" agents had signed up&nbsp;for.</p>
+        </div>
+        <div class="col-card">
+          <span class="col-label">Restricted accounts</span>
+          <p>Agents flagged on Compass's internal restricted list were given the ability to opt out of keeping any card on file at all, rather than being pushed through the same mandatory flow as everyone&nbsp;else.</p>
+        </div>
+      </div>
+    </section>
+
+    <section>
+      <h2 class="section-title">Building the bank connection on Stripe</h2>
+      <div class="section-body">
+        <p>ACH meant asking agents to hand over bank account details, a higher-trust ask than a card number. I mapped the full connection flow on Stripe's Financial Connections and Payment Element before a line of it shipped, covering both paths an agent could take.</p>
+        <p>Most agents got the fast path: pick their bank, log in through Stripe's hosted flow, and the account connects and verifies instantly, no waiting. For banks not covered by instant verification, I designed a fallback: manual entry of routing and account numbers, verified through micro-deposits, with the agent told upfront it could take one to two business days rather than left wondering why the account wasn't active yet.</p>
+        <p>Terms and privacy disclosures were built into both paths rather than bolted on, and every state, success, confirmation, error, had a defined screen so engineering never had to guess what to build.</p>
+      </div>
+      <div class="shot-frame">
+        <img src="./ach-stripe-flow.jpg" alt="User story flow diagram mapping the Stripe UI for connecting a bank account, showing the instant bank login path and the manual entry with micro-deposit verification path">
+      </div>
+      <p class="shot-caption">Both paths mapped end to end: instant bank login for most agents, manual entry and micro-deposit verification as the&nbsp;fallback.</p>
+    </section>
+
+    <section>
+      <h2 class="section-title">Designing a fee message that builds trust</h2>
+      <div class="section-body">
+        <p>Telling someone their payment method is about to cost them more is inherently friction-heavy. The real design challenge wasn't the flow mechanics, it was finding the right words, the right moment, and the right framing to deliver unwelcome news without triggering drop-off or distrust.</p>
+        <p>I designed a modal sequence that began as a dismissible notice and, after three renewal sessions, required agents to accept the updated terms to continue using the platform. That sequencing was intentional: informed and empowered, not penalized.</p>
+      </div>
+      <div class="two-col">
+        <div class="col-card">
+          <span class="col-label">Lead with the benefit, not the fee</span>
+          <p>The modal opened with the new ACH option, a positive change, before mentioning the upcoming surcharge. This framing reduced perceived threat and gave agents something actionable to do immediately.</p>
+        </div>
+        <div class="col-card">
+          <span class="col-label">Soft language for a hard message</span>
+          <p>&ldquo;Fees may apply depending on your state&rdquo; is legally accurate, reduces alarm, and still gives agents enough information to act.</p>
+        </div>
+        <div class="col-card">
+          <span class="col-label">A real window to switch</span>
+          <p>Rolling out ACH before activating the surcharge gave agents a real window to switch payment methods, turning a potential complaint into a choice.</p>
+        </div>
+        <div class="col-card">
+          <span class="col-label">Compliance built into the copy</span>
+          <p>Terms acknowledgment was embedded directly in the modal flow, satisfying legal requirements without routing agents to a separate page or breaking momentum.</p>
+        </div>
+        <div class="col-card">
+          <span class="col-label">Error states that keep agents oriented</span>
+          <p>Accept stayed disabled until the terms checkbox was checked, no vague error message, just a clear next step. The deferral count stayed visible in the same banner, so agents always knew exactly how many renewal sessions they had left before acceptance was&nbsp;required.</p>
+        </div>
+      </div>
+      <div style="max-width:900px; margin:28px auto 0;">
+        <img src="./ach-terms-escalation.jpg" alt="Three states of the Payments Terms and Conditions deferral banner, escalating from a yellow two-deferrals-left notice to an amber final-warning notice to a red mandatory-acceptance notice" class="expand-flat" style="width:100%; display:block; border:0; box-shadow:none; border-radius:0; outline:none; cursor:zoom-in;">
+      </div>
+      <p class="shot-caption">Accept stayed grayed out until the box was checked, and the banner below escalated with each visit, from two deferrals left, to one, to a final red notice that acceptance was&nbsp;mandatory.</p>
+      <div class="section-body">
+        <p>The Add payment method modal itself branched on one more condition: whether the agent had already agreed to the unified terms elsewhere in the platform. Agents who'd already agreed got a streamlined modal straight to entering a card or bank account. Agents who hadn't saw the terms embedded directly in the modal, with the acceptance checkbox disabled until they'd scrolled through the full text, so acceptance couldn't happen without at least seeing what was being agreed&nbsp;to.</p>
+      </div>
+      <div style="max-width:900px; margin:0 auto;">
+        <img src="./ach-terms-combined.jpg" alt="Two states of the Add payment method modal side by side: a streamlined version for agents already on unified terms, and a version with terms embedded and the acceptance checkbox disabled until scrolled" class="expand-flat" style="width:100%; display:block; border:0; box-shadow:none; border-radius:0; outline:none; cursor:zoom-in;">
+      </div>
+      <p class="shot-caption" style="margin-top:-4px;">One modal, two paths: a streamlined save for agents already on unified terms, and a scroll-to-unlock acceptance step for agents who&nbsp;weren't.</p>
+    </section>
+
+    <section>
+      <h2 class="section-title">What PRT caught before GA</h2>
+      <div class="section-body">
+        <p>During the PRT phase, I watched agent sessions in FullStory rather than waiting for support tickets to surface problems. Two showed up immediately. Agents were rage-clicking on the payment method dropdown, a message modal was positioned in a way that blocked the correct card option, so agents assumed the click wasn't registering and kept clicking. Repositioning the message resolved it before GA, no support tickets, no confused agents at&nbsp;scale.</p>
+        <p>The second finding was a mismatch in mental models: agents were trying to set ACH as their default payment method with no card on file, not realizing a card was required first. The platform had no messaging explaining that constraint, so I added it directly at the point of confusion rather than leaving agents to guess why the option wasn't&nbsp;working.</p>
+        <p>Both fixes shipped ahead of GA. In the weeks that followed, before I moved off the project, ACH enrollment saw a 10% increase, a direct result of removing that&nbsp;friction.</p>
+      </div>
+    </section>
+
+    <section>
+      <h2 class="section-title">Outcome</h2>
+      <div class="section-body">
+        <p>The ACH and Surcharge Initiative is projected to save Compass between $878K and $1.03M annually, a direct result of shifting processing costs and introducing a lower-cost alternative agents could adopt on their own terms. The staged rollout minimized friction by giving agents time and a genuine choice before the change took effect.</p>
+        <p>The launch itself went well: agents responded to in-platform communication about the new option and proactively enrolled during the initial rollout. Enrollment has since leveled off at a steady 10% of agents using ACH&nbsp;today.</p>
+      </div>
+      <div class="metric-banner">
+        <div>
+          <div class="metric-num">$878K&ndash;$1.03M</div>
+          <div class="metric-txt">Projected annual&nbsp;savings</div>
+        </div>
+        <div>
+          <div class="metric-num">~10%</div>
+          <div class="metric-txt">Agent ACH enrollment, steady since&nbsp;launch</div>
+        </div>
+        <div>
+          <div class="metric-num">8 weeks</div>
+          <div class="metric-txt">Product, engineering, and compliance aligned on one&nbsp;rollout</div>
+        </div>
+      </div>
+    </section>
+
+    <section>
+      <h2 class="section-title">What I'd take from this</h2>
+      <div class="section-body">
+        <p>The most impactful design decisions here weren't the most visible ones. The modal copy, the sequencing of phases, the choice to lead with ACH. None of it is flashy, but the cumulative effect was a rollout agents accepted without significant friction, and a financial outcome that directly moved the business.</p>
+        <p><strong>What I'd do differently:</strong> instrument each step of the funnel, not just the end result, so I could see exactly which moments moved agents to switch. With enrollment holding steady at 10% instead of climbing, that step-by-step data is what would tell me whether more proactive nudges are worth building, or whether ACH has simply found its natural ceiling as a strong minority&nbsp;option.</p>
+      </div>
+    </section>
+
+    <div class="meta-row" style="margin-top:16px;">
+      <div class="meta-item">
+        <p class="meta-label">Role</p>
+        <p class="meta-value">Lead product designer</p>
+      </div>
+      <div class="meta-item">
+        <p class="meta-label">Industry</p>
+        <p class="meta-value">Real estate tech</p>
+      </div>
+      <div class="meta-item">
+        <p class="meta-label">Timeline</p>
+        <p class="meta-value">8 weeks</p>
+      </div>
+    </div>
+  </div>
+</main>
+
+<footer>
+  <div class="wrap footer-row">
+    <a href="./index.html#work">&larr; Back to selected projects</a>
+    <a href="./index.html#contact">Get in touch &rarr;</a>
+  </div>
+</footer>
+
+<div class="lightbox" id="lightbox">
+  <button class="lightbox-close" aria-label="Close">&times;</button>
+  <img id="lightbox-img" src="" alt="">
+</div>
+
+<script>
+  (function(){
+    var lightbox = document.getElementById('lightbox');
+    var lightboxImg = document.getElementById('lightbox-img');
+    document.querySelectorAll('.shot-frame img').forEach(function(img){
+      img.addEventListener('click', function(){
+        lightboxImg.src = img.src;
+        lightboxImg.alt = img.alt;
+        lightboxImg.classList.remove('is-zoomed');
+        lightboxImg.classList.remove('expand-flat');
+        lightbox.classList.add('is-open');
+      });
+    });
+    document.querySelectorAll('img.expand-flat').forEach(function(img){
+      img.addEventListener('click', function(){
+        lightboxImg.src = img.src;
+        lightboxImg.alt = img.alt;
+        lightboxImg.classList.remove('is-zoomed');
+        lightboxImg.classList.add('expand-flat');
+        lightbox.classList.add('is-open');
+      });
+    });
+    function closeLightbox(){ lightbox.classList.remove('is-open'); lightboxImg.src=''; lightboxImg.classList.remove('is-zoomed'); }
+    lightbox.addEventListener('click', closeLightbox);
+    lightboxImg.addEventListener('mousemove', function(e){
+      if(!lightboxImg.classList.contains('is-zoomed')) return;
+      var rect = lightboxImg.getBoundingClientRect();
+      var xPct = ((e.clientX - rect.left) / rect.width) * 100;
+      var yPct = ((e.clientY - rect.top) / rect.height) * 100;
+      lightboxImg.style.transformOrigin = xPct + '% ' + yPct + '%';
+    });
+    lightboxImg.addEventListener('click', function(e){
+      e.stopPropagation();
+      if(lightboxImg.classList.contains('is-zoomed')){
+        lightboxImg.classList.remove('is-zoomed');
+        lightboxImg.style.transition = 'transform 0.35s ease';
+      } else {
+        var rect = lightboxImg.getBoundingClientRect();
+        var xPct = ((e.clientX - rect.left) / rect.width) * 100;
+        var yPct = ((e.clientY - rect.top) / rect.height) * 100;
+        lightboxImg.style.transition = 'transform 0.35s ease';
+        lightboxImg.style.transformOrigin = xPct + '% ' + yPct + '%';
+        lightboxImg.classList.add('is-zoomed');
+        setTimeout(function(){ lightboxImg.style.transition = 'none'; }, 350);
+      }
+    });
+    document.addEventListener('keydown', function(e){ if(e.key === 'Escape') closeLightbox(); });
+  })();
+</script>
+
+</body>
+</html>
