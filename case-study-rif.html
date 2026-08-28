@@ -93,6 +93,13 @@
     font-family:-apple-system, BlinkMacSystemFont, sans-serif;
     font-size:11px; letter-spacing:0.14em; text-transform:uppercase; color:var(--slate);
   }
+  .ai-badge{
+    display:inline-block; margin:6px 0 6px 8px; padding:2px 9px; border:1px solid rgba(101,33,116,0.25);
+    background:rgba(101,33,116,0.07); border-radius:20px; font-size:10.5px; letter-spacing:0.02em; text-transform:none; color:var(--plum); vertical-align:middle;
+  }
+  @media (max-width:640px){
+    .ai-badge{ display:block; margin:8px 0 0 0; }
+  }
   h1{
     font-family:'Newsreader', serif; font-weight:500;
     font-size:clamp(30px,4.6vw,50px); line-height:1.15; letter-spacing:-0.01em;
@@ -240,7 +247,7 @@
     <a href="./index.html#work" class="backlink">&larr; Back to selected projects</a>
 
     <div class="hero">
-      <p class="eyebrow">Independent Build &middot; RIF Surfer</p>
+      <p class="eyebrow">Independent Build &middot; RIF Surfer <span class="ai-badge">AI in process &middot; coding collaborator</span></p>
       <h1><span class="hw" style="animation-delay:0s;">RIF</span> <span class="hw" style="animation-delay:0.045s;">Surfer:</span> <span class="hw" style="animation-delay:0.09s;">designing</span> <span class="hw" style="animation-delay:0.135s;">for</span> <span class="hw" style="animation-delay:0.18s;">the</span> <span class="hw" style="animation-delay:0.225s;">worst</span> <span class="hw" style="animation-delay:0.27s;">week</span> <span class="hw" style="animation-delay:0.315s;">of</span> <span class="hw" style="animation-delay:0.36s;">someone's&nbsp;life</span></h1>
       <p class="lede">Built solo in one week after my own layoff, using Claude as a coding collaborator, RIF Surfer puts unemployment, health coverage, SNAP, and rental assistance in one place, by state, in plain language. Free, always.</p>
       <a class="site-link" href="https://rif-surfer.netlify.app/" target="_blank" rel="noopener">rif-surfer.netlify.app &rarr;</a><a class="site-link" href="https://github.com/asnyder888/rif-surfer" target="_blank" rel="noopener" style="margin-left:16px;">View source →</a><a class="site-link" href="https://github.com/asnyder888/rif-surfer/blob/main/DESIGN-SYSTEM.md" target="_blank" rel="noopener" style="margin-left:16px;">Design system →</a>
