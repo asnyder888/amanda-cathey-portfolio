@@ -93,6 +93,13 @@
     font-family:-apple-system, BlinkMacSystemFont, sans-serif;
     font-size:11px; letter-spacing:0.14em; text-transform:uppercase; color:var(--slate);
   }
+   .ai-badge{
+    display:inline-block; margin:6px 0 6px 8px; padding:2px 9px; border:1px solid rgba(101,33,116,0.25);
+    background:rgba(101,33,116,0.07); border-radius:20px; font-size:10.5px; letter-spacing:0.02em; text-transform:none; color:var(--plum); vertical-align:middle;
+  }
+  @media (max-width:640px){
+    .ai-badge{ display:block; margin:8px 0 0 0; }
+  }
   h1{
     font-family:'Newsreader', serif; font-weight:500;
     font-size:clamp(32px,5vw,54px); line-height:1.1; letter-spacing:-0.01em;
@@ -295,7 +302,7 @@
     <a href="./index.html#work" class="backlink">&larr; Back to selected projects</a>
 
     <div class="hero">
-    <p class="eyebrow">CRM Platform &middot; Compass <span style="display:inline-block; margin:6px 0 6px 8px; padding:2px 9px; border:1px solid var(--line); border-radius:20px; font-size:10.5px; letter-spacing:0.02em; text-transform:none; color:var(--slate); vertical-align:middle;">AI in process &middot; research synthesis</span></p>
+  <p class="eyebrow">CRM Platform &middot; Compass <span class="ai-badge">AI in process &middot; research synthesis</span></p>
       <h1><span class="hw" style="animation-delay:0s;">Designing</span> <span class="hw" style="animation-delay:0.045s;">a</span> <span class="hw" style="animation-delay:0.09s;">unified</span> <span class="hw" style="animation-delay:0.135s;">CRM</span> <span class="hw" style="animation-delay:0.18s;">that</span> <span class="hw" style="animation-delay:0.225s;">lifted</span> <span class="hw" style="animation-delay:0.27s;">usage&nbsp;20%</span></h1>
       <p class="lede">Three separate initiatives, shipped independently over about two years, each aimed at the same underlying problem: agents had no reliable way to see where a relationship stood or what to do next. A relationship status framework, a redesigned filtering system, and a rebuilt contact detail page went out one at a time, each building on what the last one revealed, and together lifted CRM usage 20% year-over-year.</p>
     </div>
