@@ -93,6 +93,13 @@
     font-family:-apple-system, BlinkMacSystemFont, sans-serif;
     font-size:11px; letter-spacing:0.14em; text-transform:uppercase; color:var(--slate);
   }
+  .ai-badge{
+    display:inline-block; margin:6px 0 6px 8px; padding:2px 9px; border:1px solid rgba(101,33,116,0.25);
+    background:rgba(101,33,116,0.07); border-radius:20px; font-size:10.5px; letter-spacing:0.02em; text-transform:none; color:var(--plum); vertical-align:middle;
+  }
+  @media (max-width:640px){
+    .ai-badge{ display:block; margin:8px 0 0 0; }
+  }
   h1{
     font-family:'Newsreader', serif; font-weight:500;
     font-size:clamp(30px,4.6vw,50px); line-height:1.15; letter-spacing:-0.01em;
@@ -283,7 +290,7 @@
     <a href="./index.html#work" class="backlink">&larr; Back to selected projects</a>
 
     <div class="hero">
-      <p class="eyebrow">Platform / M&amp;A &middot; Compass</p>
+     <p class="eyebrow">Platform / M&amp;A &middot; Compass <span class="ai-badge">AI in process &middot; research synthesis</span></p>
       <h1><span class="hw" style="animation-delay:0s;">Rebuilding</span> <span class="hw" style="animation-delay:0.045s;">the</span> <span class="hw" style="animation-delay:0.09s;">agent</span> <span class="hw" style="animation-delay:0.135s;">profile:</span> <span class="hw" style="animation-delay:0.18s;">from</span> <span class="hw" style="animation-delay:0.225s;">legacy</span> <span class="hw" style="animation-delay:0.27s;">system</span> <span class="hw" style="animation-delay:0.315s;">to</span> <span class="hw" style="animation-delay:0.36s;">acquisition-ready&nbsp;platform</span></h1>
       <p class="lede">A ground-up rebuild of Compass's agent profile editor and public profile, turning unstructured free-form bio text into validated, searchable data, on a six-week clock set by a strategic acquisition.</p>
     </div>
