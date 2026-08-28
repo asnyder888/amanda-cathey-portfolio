@@ -1,0 +1,454 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>How I Design — Amanda Cathey</title>
+<meta name="description" content="How Amanda Cathey approaches product design: a four-stage process built over a decade on regulated, high-stakes products, and exactly where AI fits in, and where it doesn't.">
+<link rel="canonical" href="https://amandacathey.com/process.html">
+<meta property="og:type" content="article">
+<meta property="og:title" content="How I Design — Amanda Cathey">
+<meta property="og:description" content="A four-stage design process built over a decade on regulated, high-stakes products, and exactly where AI fits in, and where it doesn't.">
+<meta property="og:url" content="https://amandacathey.com/process.html">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="How I Design — Amanda Cathey">
+<meta name="twitter:description" content="A four-stage design process built over a decade on regulated, high-stakes products, and exactly where AI fits in, and where it doesn't.">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' fill='%23000000'/%3E%3Ccircle cx='16' cy='16' r='9' fill='%23ffffff'/%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;0,6..72,600;0,6..72,700;1,6..72,400;1,6..72,500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #FFFFFF;
+    --ink: #1c1a22;
+    --ink-soft: #4A464A;
+    --muted: #6f6d78;
+    --line: rgba(23,22,29,0.11);
+    --purple: #652174;
+    --purple-soft: #f3edf5;
+    --teal: #1D6E63;
+    --teal-soft: #E1EEEC;
+    --card: #FFFFFF;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+  body {
+    background: var(--bg);
+    color: var(--ink);
+    font-family: -apple-system, BlinkMacSystemFont, sans-serif;
+    line-height: 1.6;
+  }
+  a{ color:inherit; }
+  a:focus-visible, button:focus-visible{ outline:2px solid var(--purple); outline-offset:3px; border-radius:2px; }
+  .wrap { max-width: 760px; margin: 0 auto; padding: 0 28px; }
+
+  /* Shared site header */
+  header{
+    position:sticky; top:0; z-index:10;
+    background:rgba(255,255,255,0.86);
+    backdrop-filter:blur(10px);
+    border-bottom:1px solid var(--line);
+  }
+  nav{
+    display:flex; align-items:center; justify-content:space-between;
+    padding:20px 32px;
+    max-width:1120px; margin:0 auto;
+  }
+  .nav-name{
+    font-family:'Newsreader', serif; font-size:21px; font-weight:600; letter-spacing:-0.005em;
+    color:var(--ink); text-decoration:none; transition:color 0.25s ease;
+  }
+  .nav-name:hover{ color:var(--purple); }
+  .nav-links{ display:flex; gap:28px; }
+  .nav-links a{
+    font-size:13px; text-decoration:none; color:var(--muted); letter-spacing:0.02em;
+    padding:8px 2px; position:relative; transition:color 0.2s ease;
+  }
+  .nav-links a::after{
+    content:''; position:absolute; left:2px; right:2px; bottom:2px; height:1px;
+    background:#ff1f8f; transform:scaleX(0); transform-origin:left; transition:transform 0.25s ease;
+  }
+  .nav-links a:hover::after{ transform:scaleX(1); }
+  .nav-links a:hover{ color:var(--ink); }
+
+  /* Hero */
+  .hero {
+    padding: 90px 0 90px;
+    border-bottom: 1px solid var(--line);
+  }
+  .eyebrow {
+    font-family: -apple-system, BlinkMacSystemFont, sans-serif;
+    font-size: 13px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--purple);
+    margin-bottom: 22px;
+  }
+  .hero h1 {
+    font-family: 'Newsreader', serif;
+    font-weight: 500;
+    font-size: 44px;
+    line-height: 1.18;
+    letter-spacing: -0.01em;
+    max-width: 620px;
+  }
+  .hero p.sub {
+    margin-top: 26px;
+    font-size: 18px;
+    color: var(--ink-soft);
+    max-width: 540px;
+  }
+  .hero .meta {
+    margin-top: 36px;
+    font-size: 14px;
+    color: var(--muted);
+  }
+  .hero .meta a { color: var(--purple); text-decoration: none; border-bottom: 1px solid var(--purple); }
+
+  /* Thesis statement */
+  .thesis {
+    padding: 70px 0;
+    border-bottom: 1px solid var(--line);
+  }
+  .thesis-inner {
+    max-width: 620px;
+  }
+  .thesis p {
+    font-family: 'Newsreader', serif;
+    font-weight: 400;
+    font-size: 26px;
+    line-height: 1.5;
+    color: var(--ink);
+  }
+  .thesis p em {
+    font-style: normal;
+    font-weight: 600;
+    color: var(--purple);
+  }
+  .thesis .caption {
+    font-size: 14px;
+    color: var(--muted);
+    margin-top: 18px;
+    font-style: normal;
+    font-family: -apple-system, BlinkMacSystemFont, sans-serif;
+  }
+
+  /* Process spine */
+  .process {
+    padding: 90px 0 40px;
+  }
+  .process-head {
+    margin-bottom: 60px;
+  }
+  .process-head h2 {
+    font-family: 'Newsreader', serif;
+    font-weight: 500;
+    font-size: 28px;
+  }
+  .process-head p {
+    margin-top: 12px;
+    color: var(--ink-soft);
+    max-width: 520px;
+  }
+
+  .legend {
+    display: flex;
+    gap: 24px;
+    margin-top: 24px;
+    font-size: 13px;
+    color: var(--muted);
+  }
+  .legend span { display: inline-flex; align-items: center; gap: 8px; }
+  .dot { width: 9px; height: 9px; border-radius: 50%; display: inline-block; }
+  .dot.purple { background: var(--purple); }
+  .dot.teal { background: var(--teal); }
+
+  .spine-wrap {
+    position: relative;
+    padding-left: 46px;
+  }
+  .spine-line {
+    position: absolute;
+    left: 13px;
+    top: 8px;
+    bottom: 8px;
+    width: 2px;
+    background: var(--purple);
+    opacity: 0.35;
+  }
+  .stage {
+    position: relative;
+    padding-bottom: 56px;
+  }
+  .stage:last-child { padding-bottom: 0; }
+  .stage-num {
+    position: absolute;
+    left: -46px;
+    top: -2px;
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    background: var(--purple);
+    color: #fff;
+    font-family: 'Newsreader', serif;
+    font-size: 14px;
+    font-weight: 500;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .stage h3 {
+    font-family: 'Newsreader', serif;
+    font-weight: 500;
+    font-size: 21px;
+  }
+  .stage p.desc {
+    margin-top: 8px;
+    color: var(--ink-soft);
+    max-width: 500px;
+    font-size: 15.5px;
+  }
+  .ai-branch {
+    margin-top: 18px;
+    margin-left: 8px;
+    padding: 16px 20px;
+    background: var(--teal-soft);
+    border-left: 2px solid var(--teal);
+    border-radius: 0 8px 8px 0;
+    max-width: 460px;
+  }
+  .ai-branch .tag {
+    font-family: -apple-system, BlinkMacSystemFont, sans-serif;
+    font-size: 11px;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--teal);
+    display: block;
+    margin-bottom: 6px;
+  }
+  .ai-branch p {
+    font-size: 14.5px;
+    color: var(--ink-soft);
+  }
+
+  /* Handoff diagram section */
+  .handoff {
+    padding: 90px 0;
+    border-top: 1px solid var(--line);
+  }
+  .handoff h2 {
+    font-family: 'Newsreader', serif;
+    font-weight: 500;
+    font-size: 28px;
+    margin-bottom: 14px;
+  }
+  .handoff > p {
+    color: var(--ink-soft);
+    max-width: 540px;
+    margin-bottom: 46px;
+  }
+  .flow {
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+  }
+  .flow-step {
+    display: grid;
+    grid-template-columns: 36px 1fr;
+    gap: 20px;
+    align-items: start;
+    padding: 20px 0;
+    border-bottom: 1px solid var(--line);
+  }
+  .flow-step:last-child { border-bottom: none; }
+  .flow-step .fnum {
+    font-family: -apple-system, BlinkMacSystemFont, sans-serif;
+    font-size: 13px;
+    color: var(--muted);
+    padding-top: 3px;
+  }
+  .flow-step h4 {
+    font-family: -apple-system, BlinkMacSystemFont, sans-serif;
+    font-weight: 600;
+    font-size: 16px;
+  }
+  .flow-step p {
+    margin-top: 5px;
+    font-size: 14.5px;
+    color: var(--ink-soft);
+    max-width: 480px;
+  }
+  .flow-step.human h4 { color: var(--purple); }
+  .flow-step.ai h4 { color: var(--teal); }
+
+  /* Closing */
+  .closing {
+    padding: 90px 0 110px;
+    border-top: 1px solid var(--line);
+  }
+  .closing blockquote {
+    font-family: 'Newsreader', serif;
+    font-weight: 400;
+    font-size: 30px;
+    line-height: 1.4;
+    max-width: 560px;
+  }
+  .closing .attribution {
+    margin-top: 22px;
+    font-size: 14px;
+    color: var(--muted);
+    font-family: -apple-system, BlinkMacSystemFont, sans-serif;
+  }
+  .closing .contact {
+    margin-top: 46px;
+    font-size: 14px;
+  }
+  .closing .contact a {
+    color: var(--purple);
+    text-decoration: none;
+    border-bottom: 1px solid var(--purple);
+    margin-right: 20px;
+  }
+
+  /* Shared site footer */
+  footer{
+    padding:56px 0 60px; border-top:1px solid var(--line); margin-top:0;
+  }
+  .footer-row{ display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:20px; max-width:1120px; margin:0 auto; padding:0 32px; }
+  .footer-row a{ text-decoration:none; color:var(--muted); font-size:14px; transition:color 0.2s ease; }
+  .footer-row a:hover{ color:var(--purple); }
+
+  @media (max-width: 600px) {
+    .hero h1 { font-size: 32px; }
+    .thesis p { font-size: 21px; }
+    .closing blockquote { font-size: 24px; }
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <nav>
+    <a href="./index.html" class="nav-name">Amanda Cathey</a>
+    <div class="nav-links">
+      <a href="./index.html#hero">Home</a>
+      <a href="./index.html#about">About</a>
+      <a href="./index.html#contact">Connect</a>
+    </div>
+  </nav>
+</header>
+
+<div class="wrap">
+  <section class="hero">
+    <div class="eyebrow">Amanda Cathey — process</div>
+    <h1>Human judgment at the center. AI at the edges.</h1>
+    <p class="sub">A walk through how I actually work, from research through a shipped, reviewed design, and exactly where AI fits along the way.</p>
+  </section>
+
+  <section class="thesis">
+    <div class="thesis-inner">
+      <div>
+        <p>AI is genuinely useful for synthesis and speed. <em>It doesn't decide what's right</em> for the person on the other end of a workflow, that's still my job.</p>
+        <p class="caption">This is the principle behind everything on this page.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="process">
+    <div class="process-head">
+      <h2>My process</h2>
+      <p>Four stages, the same ones I've used on regulated, high-stakes products for over a decade. AI shows up at specific points, never all of them.</p>
+      <div class="legend">
+        <span><span class="dot purple"></span> The process</span>
+        <span><span class="dot teal"></span> Where AI helps</span>
+      </div>
+    </div>
+
+    <div class="spine-wrap">
+      <div class="spine-line"></div>
+
+      <div class="stage">
+        <div class="stage-num">1</div>
+        <h3>Discover</h3>
+        <p class="desc">Talk to the people who'll actually use this. Interviews, usability testing, support feedback, heuristic audits, understand what's actually breaking down before proposing anything.</p>
+        <div class="ai-branch">
+          <span class="tag">AI helps here</span>
+          <p>Clustering findings across interviews faster, so patterns surface sooner. It doesn't decide what the pattern means, that's still mine to interpret.</p>
+        </div>
+      </div>
+
+      <div class="stage">
+        <div class="stage-num">2</div>
+        <h3>Define</h3>
+        <p class="desc">Turn what I learned into a clear problem statement, often different from the original ask. This is where I push back if the real problem is bigger than the requested feature.</p>
+      </div>
+
+      <div class="stage">
+        <div class="stage-num">3</div>
+        <h3>Design</h3>
+        <p class="desc">Sitemap, prototype, and design in Figma using our design system. Test early rather than waiting for a polished version.</p>
+        <div class="ai-branch">
+          <span class="tag">AI helps here</span>
+          <p>Fast first-pass prototypes to react to sooner, and structured documentation drafted from a plain description, which I still review and correct.</p>
+        </div>
+      </div>
+
+      <div class="stage">
+        <div class="stage-num">4</div>
+        <h3>Validate</h3>
+        <p class="desc">Usability testing before shipping, then watching real adoption after launch. Stakeholder check-ins happen throughout this whole process, not just at the end.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="handoff">
+    <h2>Where design meets code</h2>
+    <p>The step most people don't see: how a finished design actually becomes a working feature, and where a human has to be the one who signs off.</p>
+
+    <div class="flow">
+      <div class="flow-step human">
+        <div class="fnum">01</div>
+        <div>
+          <h4>Design in Figma</h4>
+          <p>Structure, real tokens, documented components, same as always.</p>
+        </div>
+      </div>
+      <div class="flow-step ai">
+        <div class="fnum">02</div>
+        <div>
+          <h4>Figma MCP exposes real design data</h4>
+          <p>Actual color tokens and component names, not a screenshot guess, plus links to design system documentation.</p>
+        </div>
+      </div>
+      <div class="flow-step ai">
+        <div class="fnum">03</div>
+        <div>
+          <h4>An AI coding agent drafts a first pass</h4>
+          <p>Claude Code, Codex, whichever a team has standardized on, generates a starting implementation grounded in that real data.</p>
+        </div>
+      </div>
+      <div class="flow-step human">
+        <div class="fnum">04</div>
+        <div>
+          <h4>A person reviews before it ships</h4>
+          <p>Every time. The AI's confidence is not the same thing as correctness, especially in a regulated workflow.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="closing">
+    <blockquote>The best design disappears.<br>What remains is trust.</blockquote>
+    <div class="attribution">— the principle behind every stage above</div>
+  </section>
+</div>
+
+<footer>
+  <div class="footer-row">
+    <a href="./index.html">&larr; Back to home</a>
+    <a href="./index.html#contact">Get in touch &rarr;</a>
+  </div>
+</footer>
+
+</body>
+</html>
