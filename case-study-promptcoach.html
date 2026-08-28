@@ -93,6 +93,13 @@
     font-family:-apple-system, BlinkMacSystemFont, sans-serif;
     font-size:11px; letter-spacing:0.14em; text-transform:uppercase; color:var(--slate);
   }
+  .ai-badge{
+    display:inline-block; margin:6px 0 6px 8px; padding:2px 9px; border:1px solid rgba(101,33,116,0.25);
+    background:rgba(101,33,116,0.07); border-radius:20px; font-size:10.5px; letter-spacing:0.02em; text-transform:none; color:var(--plum); vertical-align:middle;
+  }
+  @media (max-width:640px){
+    .ai-badge{ display:block; margin:8px 0 0 0; }
+  }
   h1{
     font-family:'Newsreader', serif; font-weight:500;
     font-size:clamp(32px,5vw,54px); line-height:1.1; letter-spacing:-0.01em;
@@ -222,7 +229,7 @@
     <a href="./index.html#work" class="backlink">&larr; Back to selected projects</a>
 
     <div class="hero">
-      <p class="eyebrow">AI Product &middot; Compass</p>
+     <p class="eyebrow">AI Product &middot; Compass <span class="ai-badge">AI in product</span></p>
       <h1><span class="hw" style="animation-delay:0s;">Prompt</span> <span class="hw" style="animation-delay:0.045s;">Coach:</span> <span class="hw" style="animation-delay:0.09s;">designing</span> <span class="hw" style="animation-delay:0.135s;">the</span> <span class="hw" style="animation-delay:0.18s;">human</span> <span class="hw" style="animation-delay:0.225s;">side</span> <span class="hw" style="animation-delay:0.27s;">of&nbsp;AI</span></h1>
       <p class="lede">A 72-hour hackathon build that took a cross-functional team of six from concept to production-ready, won the #MoveFast Award at the 2023 Compass Hackathon, and shipped as part of Compass AI, where agents use it today.</p>
     </div>
