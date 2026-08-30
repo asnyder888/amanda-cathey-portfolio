@@ -1,0 +1,390 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Onboarding through a 10x jump in scale — Amanda Cathey</title>
+<meta name="description" content="A scoped look at onboarding during the Compass–Anywhere merger, when the agent base grew roughly 10x almost overnight, focused on the mobile flow and a usability finding about trust in AI assistance.">
+<link rel="canonical" href="https://amandacathey.com/case-study-onboarding.html">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Onboarding through a 10x jump in scale — Amanda Cathey">
+<meta property="og:description" content="A scoped look at onboarding during the Compass–Anywhere merger, focused on the mobile flow and a usability finding about trust in AI assistance.">
+<meta property="og:url" content="https://amandacathey.com/case-study-onboarding.html">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' fill='%23000000'/%3E%3Ccircle cx='16' cy='16' r='9' fill='%23ffffff'/%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;0,6..72,600;0,6..72,700;1,6..72,400;1,6..72,500;1,6..72,600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --ink:#1c1a22;
+    --paper:#ffffff;
+    --card-tan:#f1ece2;
+    --paper-dim:#57555f;
+    --plum:#652174;
+    --brass:#9c6f28;
+    --slate:#6f6d78;
+    --line: rgba(23,22,29,0.11);
+    --maxw: 1120px;
+  }
+  *{box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{
+    margin:0;
+    background:var(--paper);
+    color:var(--ink);
+    font-family:-apple-system, BlinkMacSystemFont, sans-serif;
+    font-size:16px;
+    line-height:1.6;
+    -webkit-font-smoothing:antialiased;
+  }
+  @media (prefers-reduced-motion: reduce){
+    *{animation-duration:0.01ms !important; transition-duration:0.01ms !important;}
+  }
+  ::selection{background:var(--plum); color:#ffffff;}
+  a{color:inherit;}
+  a:focus-visible, button:focus-visible{ outline:2px solid var(--plum); outline-offset:3px; border-radius:2px; }
+  .wrap{max-width:var(--maxw); margin:0 auto; padding:0 32px;}
+
+  header{
+    position:sticky; top:0; z-index:10;
+    background:rgba(255,255,255,0.86);
+    backdrop-filter:blur(10px);
+    border-bottom:1px solid var(--line);
+  }
+  nav{
+    display:flex; align-items:center; justify-content:space-between;
+    padding:20px 32px;
+    max-width:var(--maxw); margin:0 auto;
+  }
+  .nav-name{
+    font-family:'Newsreader', serif; font-size:21px; font-weight:600; letter-spacing:-0.005em;
+    color:var(--ink); text-decoration:none; transition:color 0.25s ease;
+  }
+  .nav-name:hover{ color:var(--plum); }
+  .nav-links{ display:flex; gap:28px; }
+  .nav-links a{
+    font-size:13px; text-decoration:none; color:var(--paper-dim); letter-spacing:0.02em;
+    padding:8px 2px; position:relative; transition:color 0.2s ease;
+  }
+  .nav-links a::after{
+    content:''; position:absolute; left:2px; right:2px; bottom:2px; height:1px;
+    background:#ff1f8f; transform:scaleX(0); transform-origin:left; transition:transform 0.25s ease;
+  }
+  .nav-links a:hover::after{ transform:scaleX(1); }
+  .nav-links a:hover{ color:var(--ink); }
+
+  .backlink{
+    display:inline-flex; align-items:center; gap:8px;
+    font-size:13px; color:var(--paper-dim); text-decoration:none;
+    margin:40px 0 24px;
+    transition:color 0.2s ease;
+  }
+  .backlink:hover{ color:var(--plum); }
+
+  .hero{ padding:0 0 48px; }
+  .eyebrow{
+    font-family:-apple-system, BlinkMacSystemFont, sans-serif;
+    font-size:11px; letter-spacing:0.14em; text-transform:uppercase; color:var(--slate);
+  }
+  .ai-badge{
+    display:inline-block; margin:6px 0 6px 8px; padding:2px 9px; border:1px solid rgba(101,33,116,0.25);
+    background:rgba(101,33,116,0.07); border-radius:20px; font-size:10.5px; letter-spacing:0.02em; text-transform:none; color:var(--plum); vertical-align:middle;
+  }
+  @media (max-width:640px){
+    .ai-badge{ display:block; margin:8px 0 0 0; }
+  }
+  .scope-note{
+    display:inline-block; margin:6px 0 6px 8px; padding:2px 9px; border:1px solid var(--line);
+    background:var(--card-tan); border-radius:20px; font-size:10.5px; letter-spacing:0.02em; text-transform:none; color:var(--paper-dim); vertical-align:middle;
+  }
+  @media (max-width:640px){
+    .scope-note{ display:block; margin:8px 0 0 0; }
+  }
+  h1{
+    font-family:'Newsreader', serif; font-weight:500;
+    font-size:clamp(32px,5vw,54px); line-height:1.1; letter-spacing:-0.01em;
+    margin:14px 0 20px; max-width:20ch; color:var(--plum);
+  }
+  .hw{
+    display:inline-block;
+    opacity:0;
+    transform:translateY(7px);
+    animation:hwRipple 0.65s ease-out forwards;
+  }
+  @keyframes hwRipple{
+    to{ opacity:1; transform:translateY(0); }
+  }
+  .lede{ font-size:16px; color:var(--paper-dim); max-width:62ch; margin:0; }
+
+  .meta-row{
+    display:flex; flex-wrap:wrap; gap:40px;
+    padding:28px 0; margin:36px 0 0; border-top:1px solid var(--line); border-bottom:1px solid var(--line);
+  }
+  .meta-item .meta-label{ font-size:11px; letter-spacing:0.08em; text-transform:uppercase; color:var(--slate); margin:0 0 6px; }
+  .meta-item .meta-value{ font-size:15px; color:var(--ink); }
+
+  section{ padding:56px 0; }
+  .section-title{
+    font-family:'Newsreader', serif; font-weight:500; font-size:clamp(22px,2.8vw,30px);
+    margin:0 0 18px; color:var(--ink);
+  }
+  .section-eyebrow{
+    font-family:-apple-system, BlinkMacSystemFont, sans-serif;
+    font-size:11px; letter-spacing:0.1em; text-transform:uppercase; color:var(--brass); margin:0 0 8px;
+  }
+  .section-body p{ color:var(--paper-dim); font-size:16px; max-width:70ch; margin:0 0 16px; }
+  .section-body strong{ color:var(--ink); font-weight:500; }
+
+  .three-col{ display:grid; grid-template-columns:1fr 1fr 1fr; gap:28px; }
+  @media (max-width:760px){ .three-col{ grid-template-columns:1fr; gap:28px; } }
+  .stat-card{ text-align:center; padding:8px; }
+  .stat-card .stat-move{ font-family:'Newsreader', serif; font-size:clamp(20px,2.6vw,28px); color:var(--plum); font-weight:500; }
+  .stat-card .stat-label{ font-size:13px; color:var(--slate); margin-top:6px; }
+
+  .shot-frame{
+    border-radius:14px; overflow:hidden; box-shadow:0 10px 24px rgba(0,0,0,0.10);
+    border:1px solid var(--line);
+    margin:36px 0;
+  }
+  .shot-frame img{ width:100%; display:block; cursor:zoom-in; transition:opacity 0.2s ease; }
+  .shot-frame img:hover{ opacity:0.92; }
+
+  .lightbox{
+    position:fixed; inset:0; z-index:100;
+    background:rgba(20,18,22,0.92);
+    display:none; align-items:center; justify-content:center;
+    padding:40px; cursor:zoom-out;
+  }
+  .lightbox.is-open{ display:flex; }
+  .lightbox img{
+    max-width:100%; max-height:100%; border-radius:8px; box-shadow:0 30px 80px rgba(0,0,0,0.5);
+    cursor:zoom-in; transition:transform 0.35s ease; transform-origin:center center;
+  }
+  .lightbox img.is-zoomed{ cursor:zoom-out; transform:scale(2.2); max-width:none; max-height:none; }
+  .lightbox-close{
+    position:fixed; top:24px; right:32px; z-index:101;
+    color:#fff; font-size:28px; line-height:1; background:none; border:none; cursor:pointer;
+    font-family:-apple-system, BlinkMacSystemFont, sans-serif;
+  }
+  .shot-caption{ font-size:13px; color:var(--slate); margin:12px 0 32px; text-align:center; }
+
+  .phone-row{ display:flex; gap:24px; justify-content:center; flex-wrap:wrap; margin:36px 0 8px; }
+  .phone-frame{ position:relative; padding:14px 7px; border-radius:24px; background:#1a1a1a; box-shadow:0 20px 50px rgba(0,0,0,0.28); width:200px; flex:0 0 auto; }
+  .phone-frame .notch{ position:absolute; top:6px; left:50%; transform:translateX(-50%); width:36px; height:10px; background:#1a1a1a; border-radius:8px; z-index:3; }
+  .phone-frame .screen{ width:100%; aspect-ratio:9/19.4; border-radius:15px; overflow:hidden; position:relative; }
+  .phone-frame .screen img{ width:100%; height:100%; object-fit:cover; object-position:top; display:block; }
+  .phone-frame .homebar{ position:absolute; bottom:5px; left:50%; transform:translateX(-50%); width:50px; height:3px; background:rgba(120,120,120,0.6); border-radius:4px; z-index:3; }
+  .phone-caption{ text-align:center; font-size:12.5px; color:var(--slate); margin-top:10px; max-width:200px; }
+  .phone-col{ display:flex; flex-direction:column; align-items:center; }
+
+  footer{
+    padding:56px 0 60px; border-top:1px solid var(--line); margin-top:40px;
+  }
+  .footer-row{ display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:20px; }
+  .footer-row a{ text-decoration:none; color:var(--paper-dim); font-size:14px; transition:color 0.2s ease; }
+  .footer-row a:hover{ color:var(--plum); }
+</style>
+</head>
+<body>
+
+<header>
+  <nav>
+    <a href="./index.html" class="nav-name">Amanda Cathey</a>
+    <div class="nav-links">
+      <a href="./index.html#hero">Home</a>
+      <a href="./index.html#about">About</a>
+      <a href="./index.html#contact">Connect</a>
+    </div>
+  </nav>
+</header>
+
+<main>
+  <div class="wrap">
+    <a href="./index.html#work" class="backlink">&larr; Back to selected projects</a>
+
+    <div class="hero">
+      <p class="eyebrow">Onboarding &middot; Compass <span class="ai-badge">AI in product &middot; guided assistant</span><span class="scope-note">Partial scope, see note below</span></p>
+      <h1><span class="hw" style="animation-delay:0s;">Onboarding</span> <span class="hw" style="animation-delay:0.045s;">through</span> <span class="hw" style="animation-delay:0.09s;">a</span> <span class="hw" style="animation-delay:0.135s;">10x</span> <span class="hw" style="animation-delay:0.18s;">jump</span> <span class="hw" style="animation-delay:0.225s;">in</span> <span class="hw" style="animation-delay:0.27s;">scale</span></h1>
+      <p class="lede">When Compass acquired Anywhere, the agent base grew from roughly 30,000 to 300,000 almost overnight, and onboarding had to absorb all of it at once. I worked on the mobile onboarding flow and sat in on usability sessions for the broader experience, though I wasn't on this project end to end. This is a narrower case study than my others, scoped honestly to what I actually touched.</p>
+    </div>
+
+    <div class="three-col">
+      <div class="stat-card">
+        <div class="stat-move">30k &rarr; 300k</div>
+        <div class="stat-label">Agents onboarding at once</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-move">Web &amp; Mobile</div>
+        <div class="stat-label">Two distinct onboarding paths</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-move">Contributor</div>
+        <div class="stat-label">Mobile flow &amp; usability observation</div>
+      </div>
+    </div>
+
+    <div class="shot-frame" style="max-width:800px; margin:40px auto 0;">
+      <img src="./onboarding-checklist.jpg" alt="Compass web onboarding checklist, Get set up, with an AI Assistant entry in the left navigation">
+    </div>
+    <p class="shot-caption">Onboarding on web: a checklist of setup tasks, with an AI assistant available throughout.</p>
+
+    <section>
+      <h2 class="section-title">The problem</h2>
+      <div class="section-body">
+        <p>Compass's acquisition of Anywhere brought roughly ten times the existing agent base onto the platform in a short window. Most of these agents had never touched Compass before. Onboarding, which previously served a much smaller, steadier trickle of new agents, needed to teach an entire new population how the platform worked, on both web and mobile, without a proportional increase in support headcount.</p>
+      </div>
+    </section>
+
+    <section>
+      <h2 class="section-title">Where I fit in</h2>
+      <div class="section-body">
+        <p>I designed the mobile onboarding flow, a short, guided walkthrough of the handful of features a new agent needed first. I also sat in on usability sessions for the onboarding experience more broadly, including the web version, which leaned on an AI assistant rather than a fixed tour. I didn't own that AI assistant or the web experience, and I wasn't on this project from kickoff through launch, so what follows is scoped to what I directly worked on and observed in testing.</p>
+      </div>
+    </section>
+
+    <section>
+      <p class="section-eyebrow">Where AI showed up</p>
+      <h2 class="section-title">A choice, not a script</h2>
+      <div class="section-body">
+        <p>On web, onboarding for a given task routed through an AI assistant that offered agents a real choice: take a guided tour, ask questions about what a feature does, or hand the task itself off to the assistant to complete. That last option, letting the assistant act on your behalf, was the fastest path on paper.</p>
+      </div>
+      <div class="shot-frame" style="max-width:760px; margin-left:auto; margin-right:auto;">
+        <img src="./onboarding-ai-menu.jpg" alt="Compass AI assistant onboarding menu offering three options: take a guided tour, ask what can I do here, or have the assistant perform tasks for you">
+      </div>
+      <p class="shot-caption">Three ways in: a guided tour, a Q&amp;A, or letting the assistant just do it.</p>
+    </section>
+
+    <section>
+      <p class="section-eyebrow">What usability testing surfaced</p>
+      <h2 class="section-title">Agents didn't reach for the fast option</h2>
+      <div class="section-body">
+        <p>In sessions, that wasn't the path agents took. Offered a shortcut, more than one agent asked to be walked through it themselves instead, even when handing it to the assistant would have been quicker.</p>
+      </div>
+      <div class="shot-frame" style="max-width:760px; margin-left:auto; margin-right:auto;">
+        <img src="./onboarding-ai-teach-myself.jpg" alt="Compass AI assistant chat, agent selects Teach me how to do it myself instead of having the assistant complete the task">
+      </div>
+      <p class="shot-caption">Offered a shortcut, this agent asked to be walked through it instead.</p>
+      <div class="section-body">
+        <p><strong>Key observation:</strong> the hesitation wasn't about confusion. Agents understood exactly what the assistant was offering to do. It looked more like reluctance to hand over control to something new, during a stretch when so much else, the platform, the company, the workflow, already felt unfamiliar. It's a useful reminder that trust in an AI feature isn't just a matter of a clear interface, it's earned gradually, and the very first ask an assistant makes of someone matters more than the rest of its feature list.</p>
+      </div>
+    </section>
+
+    <section>
+      <p class="section-eyebrow">The mobile flow</p>
+      <h2 class="section-title">A simpler, literal walkthrough</h2>
+      <div class="section-body">
+        <p>My part was the mobile onboarding: no AI assistant, just a short, linear tour pointing at the handful of features a new agent needed first, then a clear handoff back to exploring on their own.</p>
+      </div>
+      <div class="phone-row">
+        <div class="phone-col">
+          <div class="phone-frame">
+            <div class="notch"></div>
+            <div class="screen">
+              <img src="./onboarding-mobile-welcome.jpg" alt="Compass mobile app welcome screen, Let's take a quick look at some key mobile features that will help you succeed">
+            </div>
+            <div class="homebar"></div>
+          </div>
+          <p class="phone-caption">A short welcome, setting expectations before the tour starts.</p>
+        </div>
+        <div class="phone-col">
+          <div class="phone-frame">
+            <div class="notch"></div>
+            <div class="screen">
+              <img src="./onboarding-mobile-tour.jpg" alt="Compass mobile app tour tooltip pointing to Quick Actions">
+            </div>
+            <div class="homebar"></div>
+          </div>
+          <p class="phone-caption">Tooltips point directly at the feature being introduced.</p>
+        </div>
+        <div class="phone-col">
+          <div class="phone-frame">
+            <div class="notch"></div>
+            <div class="screen">
+              <img src="./onboarding-mobile-final.jpg" alt="Compass mobile app final onboarding screen, Now you are ready to jump in and explore on your own">
+            </div>
+            <div class="homebar"></div>
+          </div>
+          <p class="phone-caption">A clean handoff back to the app, no assistant required.</p>
+        </div>
+      </div>
+    </section>
+
+    <section>
+      <h2 class="section-title">What I'd take from this</h2>
+      <div class="section-body">
+        <p>I'd want to see the AI-hesitancy finding followed up on more deliberately: whether it was about trust in that specific assistant, AI in general, or simply timing, given everything else agents were absorbing during the merger. I only saw a slice of this project, but it's one of the clearest real examples I have of a gap between what an AI feature is capable of and what people are actually ready to let it do on day one.</p>
+      </div>
+    </section>
+
+    <div class="meta-row" style="margin-top:16px;">
+      <div class="meta-item">
+        <p class="meta-label">Role</p>
+        <p class="meta-value">Contributor: mobile onboarding flow, usability observation</p>
+      </div>
+      <div class="meta-item">
+        <p class="meta-label">Context</p>
+        <p class="meta-value">Compass&ndash;Anywhere merger, agent base scaled roughly 10x</p>
+      </div>
+      <div class="meta-item">
+        <p class="meta-label">Note</p>
+        <p class="meta-value">Not an end-to-end project; scope limited to mobile flow and testing</p>
+      </div>
+    </div>
+  </div>
+</main>
+
+<footer>
+  <div class="wrap footer-row">
+    <a href="./index.html#work">&larr; Back to selected projects</a>
+    <a href="./index.html#contact">Get in touch &rarr;</a>
+  </div>
+</footer>
+
+<div class="lightbox" id="lightbox">
+  <button class="lightbox-close" aria-label="Close">&times;</button>
+  <img id="lightbox-img" src="" alt="">
+</div>
+
+<script>
+  (function(){
+    var lightbox = document.getElementById('lightbox');
+    var lightboxImg = document.getElementById('lightbox-img');
+    document.querySelectorAll('.shot-frame img').forEach(function(img){
+      img.addEventListener('click', function(){
+        lightboxImg.src = img.src;
+        lightboxImg.alt = img.alt;
+        lightboxImg.classList.remove('is-zoomed');
+        lightbox.classList.add('is-open');
+      });
+    });
+    function closeLightbox(){ lightbox.classList.remove('is-open'); lightboxImg.src=''; lightboxImg.classList.remove('is-zoomed'); }
+    lightbox.addEventListener('click', closeLightbox);
+    lightboxImg.addEventListener('mousemove', function(e){
+      if(!lightboxImg.classList.contains('is-zoomed')) return;
+      var rect = lightboxImg.getBoundingClientRect();
+      var xPct = ((e.clientX - rect.left) / rect.width) * 100;
+      var yPct = ((e.clientY - rect.top) / rect.height) * 100;
+      lightboxImg.style.transformOrigin = xPct + '% ' + yPct + '%';
+    });
+    lightboxImg.addEventListener('click', function(e){
+      e.stopPropagation();
+      if(lightboxImg.classList.contains('is-zoomed')){
+        lightboxImg.classList.remove('is-zoomed');
+        lightboxImg.style.transition = 'transform 0.35s ease';
+      } else {
+        var rect = lightboxImg.getBoundingClientRect();
+        var xPct = ((e.clientX - rect.left) / rect.width) * 100;
+        var yPct = ((e.clientY - rect.top) / rect.height) * 100;
+        lightboxImg.style.transition = 'transform 0.35s ease';
+        lightboxImg.style.transformOrigin = xPct + '% ' + yPct + '%';
+        lightboxImg.classList.add('is-zoomed');
+        setTimeout(function(){ lightboxImg.style.transition = 'none'; }, 350);
+      }
+    });
+    document.addEventListener('keydown', function(e){ if(e.key === 'Escape') closeLightbox(); });
+  })();
+</script>
+
+</body>
+</html>
