@@ -979,7 +979,7 @@
   (function(){
     var pills = document.querySelectorAll('.filter-pill');
     var cards = document.querySelectorAll('.case-card');
-    pills.forEach(function(pill){
+     pills.forEach(function(pill){
       pill.addEventListener('click', function(){
         pills.forEach(function(p){ p.classList.remove('is-active'); });
         pill.classList.add('is-active');
@@ -988,10 +988,14 @@
           var tags = (card.getAttribute('data-tags') || '').split(',');
           var show = filter === 'all' || tags.indexOf(filter) !== -1;
           card.classList.toggle('is-filtered-out', !show);
+          if(filter === 'all'){
+            card.style.order = '';
+          } else {
+            card.style.order = card.classList.contains('case-full') ? '-1' : '0';
+          }
         });
       });
     });
-  })();
 </script>
 </body>
 </html>
