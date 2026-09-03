@@ -430,9 +430,13 @@
 
 
   /* ---------- case cards ---------- */
-  .filter-pills{
-    max-width:var(--maxw); margin:0 auto 28px; padding:0 32px;
+ .filter-pills{
+    max-width:var(--maxw); margin:0 auto 28px;
     display:flex; flex-wrap:wrap; gap:10px;
+  }
+  @media (max-width:640px){
+    .filter-pill{ padding:7px 12px; font-size:12px; }
+    .filter-pills{ gap:8px; }
   }
   .filter-pill{
     font-family:-apple-system, BlinkMacSystemFont, sans-serif;
