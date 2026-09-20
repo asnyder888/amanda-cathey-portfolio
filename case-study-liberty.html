@@ -168,11 +168,7 @@
     padding:40px; cursor:zoom-out;
   }
   .lightbox.is-open{ display:flex; }
-  .lightbox img{
-    max-width:100%; max-height:100%; border-radius:8px; box-shadow:0 30px 80px rgba(0,0,0,0.5);
-    cursor:zoom-in; transition:transform 0.35s ease; transform-origin:center center;
-  }
-  .lightbox img.is-zoomed{ cursor:zoom-out; transform:scale(3); max-width:none; max-height:none; }
+  .lightbox img{ max-width:100%; max-height:100%; border-radius:8px; box-shadow:0 30px 80px rgba(0,0,0,0.5); }
   .lightbox-close{
     position:fixed; top:24px; right:32px; z-index:101;
     color:#fff; font-size:28px; line-height:1; background:none; border:none; cursor:pointer;
@@ -465,34 +461,11 @@
       img.addEventListener('click', function(){
         lightboxImg.src = img.src;
         lightboxImg.alt = img.alt;
-        lightboxImg.classList.remove('is-zoomed');
         lightbox.classList.add('is-open');
       });
     });
-    function closeLightbox(){ lightbox.classList.remove('is-open'); lightboxImg.src=''; lightboxImg.classList.remove('is-zoomed'); }
+    function closeLightbox(){ lightbox.classList.remove('is-open'); lightboxImg.src=''; }
     lightbox.addEventListener('click', closeLightbox);
-    lightboxImg.addEventListener('mousemove', function(e){
-      if(!lightboxImg.classList.contains('is-zoomed')) return;
-      var rect = lightboxImg.getBoundingClientRect();
-      var xPct = ((e.clientX - rect.left) / rect.width) * 100;
-      var yPct = ((e.clientY - rect.top) / rect.height) * 100;
-      lightboxImg.style.transformOrigin = xPct + '% ' + yPct + '%';
-    });
-    lightboxImg.addEventListener('click', function(e){
-      e.stopPropagation();
-      if(lightboxImg.classList.contains('is-zoomed')){
-        lightboxImg.classList.remove('is-zoomed');
-        lightboxImg.style.transition = 'transform 0.35s ease';
-      } else {
-        var rect = lightboxImg.getBoundingClientRect();
-        var xPct = ((e.clientX - rect.left) / rect.width) * 100;
-        var yPct = ((e.clientY - rect.top) / rect.height) * 100;
-        lightboxImg.style.transition = 'transform 0.35s ease';
-        lightboxImg.style.transformOrigin = xPct + '% ' + yPct + '%';
-        lightboxImg.classList.add('is-zoomed');
-        setTimeout(function(){ lightboxImg.style.transition = 'none'; }, 350);
-      }
-    });
     document.addEventListener('keydown', function(e){ if(e.key === 'Escape') closeLightbox(); });
   })();
 </script>
